@@ -1,6 +1,6 @@
 /* 
  * File:   thom6223_lab5main.c
- * Author: Jake Thompson and Carol Svare
+ * Author: Jake Thompson, Carol Svare, Mai Hashad, Rachel Chadwick
  *
  * Created on November 21, 2017, 11:45 AM
  */
