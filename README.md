@@ -8,3 +8,5 @@ Parts required:
 Small 1.2” : 8x8 LED matrix w/ I2C backpack-Red
 2-axis joystick with click, board mounted
 LCD
+
+carol
