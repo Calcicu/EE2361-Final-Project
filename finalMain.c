@@ -28,6 +28,15 @@
 
 void setup(void);
 
+void __attribute__((__interrupt__,__auto_psv__)) _I1CInterrupt(void)
+{
+  
+}
+void __attribute__((__interrupt__,__auto_psv__)) _I2CInterrupt(void)
+{
+  
+}
+
 
 int main()
 {
@@ -41,6 +50,15 @@ void setup(void)
   //AD1PCFG = 
   //TRISA = 
   //TRISB = 
+  
+  
+  /*initialize input capture for push button
+  
+  */
+  
+  /*initialize input capture for the joystick
+  
+  */
   
   /*initialize i2c for LCD and LED
     I2C2CON = 0;
