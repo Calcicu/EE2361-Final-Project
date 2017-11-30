@@ -54,12 +54,11 @@ void setup(void)
   
   /*initialize input capture for push button
   
-  */
   
-  /*initialize input capture for the joystick
   
   */
   
+ 
   /*initialize i2c for LCD and LED
     I2C2CON = 0;
     I2C2CONbits.DISSLW = 
@@ -84,7 +83,14 @@ void setup(void)
     _AD1IP =    //set interrupt priority
     _AD1IE = 1; //enable interrupt
     
+    initialize input capture for the joystick
+    __builtin_write_OSCCONL (OSCCON & 0xbf);
+    RPIN7bits.IC2R = 8; // ic2 is associated with RB8
+    __builtin_write_OSCCONL (OSCCON | 0x40);
     
+   
+ 
+  
     
     
   */
