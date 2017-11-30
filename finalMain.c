@@ -42,7 +42,15 @@ void setup(void)
   //TRISA = 
   //TRISB = 
   
-  //inittialise i2c for LCD and LED
+  /*initialize i2c for LCD and LED
+    I2C2CON = 0;
+    I2C2CONbits.DISSLW = 
+    I2CBRG = 
+    _MI2C2IF = 
+    I2C2CONbits.I2CEN = 1; //enable I2C
+  */
+  
+  
   
   /*initialize ADC for joystick
     
