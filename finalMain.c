@@ -47,7 +47,7 @@ int main()
 void setup(void)
 {
   CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
-  //AD1PCFG = 
+  AD1PCFG = 0xfffd;
   //TRISA = 
   //TRISB = 
   
@@ -73,15 +73,23 @@ void setup(void)
     
     _VCFG = 
     _ADCS = 
-    _ASAM = 
-    _SSRC = 
+    _ASAM = 1;
+    _SSRC = 0b010;
     _SAMC = 
     _SMPI = 
+    
+    TRM3 = 0;
+    T3CON = 
+    PR3 = 
+    T3CONbits.TCKPS = 
+    T3COnbits.TON = 1;
     
     initialize interrupt:
     _AD1IF = 0; // set interrupt flag to 0
     _AD1IP =    //set interrupt priority
     _AD1IE = 1; //enable interrupt
+    
+    AD1CON1bits.ADON = 1; //
     
     initialize input capture for the joystick
     __builtin_write_OSCCONL (OSCCON & 0xbf);
