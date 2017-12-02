@@ -30,11 +30,15 @@ void setup(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _I1CInterrupt(void)
 {
-  
+  // interrupt for color button
 }
 void __attribute__((__interrupt__,__auto_psv__)) _I2CInterrupt(void)
 {
-  
+  // interrupt for the joystick
+}
+void __attribute__((__interrupt__,__auto_psv__)) _I2CInterrupt(void)
+{
+  // interrupt for the 3rd button
 }
 
 void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
@@ -65,11 +69,17 @@ void setup(void)
   //TRISB = 
   
   
-  /*initialize input capture for push button
-  __builtin_write_OSCCONL (OSCCON & 0xbf
+  //initialize input capture for push button
+  
+  INTCON1bits.NSTDIS = 1; //disables interrupt nesting
+  IPC0bits.IC1IP = 4;   // interrupt priority
+ 
+  __builtin_write_OSCCONL (OSCCON & 0xbf);
+  RPIN7bits.IC1R = 9;
+  __builtin_write_OSCCONL (OSCCON | 0x40);
   
   
-  */
+ 
   
  
   //initialize i2c for LCD and
