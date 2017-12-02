@@ -36,6 +36,13 @@ void __attribute__((__interrupt__,__auto_psv__)) _I2CInterrupt(void)
 {
   
 }
+
+void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
+{
+  _AD1IF = 0;
+}
+
+
 /*
 void __attribute__((__interrupt__,__auto_psv__)) _T3Interrupt(void) 
 {
