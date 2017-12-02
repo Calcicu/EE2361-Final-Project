@@ -59,7 +59,7 @@ void setup(void)
   */
   
  
-  initialize i2c for LCD and
+  //initialize i2c for LCD and
     I2C2CON = 0;
     I2C2CONbits.DISSLW = 1;
     I2CBRG = 157;
@@ -84,7 +84,7 @@ void setup(void)
     _SMPI = 0; // Interrupts at the completion of conversion for each sample/convert sequence
     
     
-    initialize interrupt:
+   // initialize interrupt:
     _AD1IF = 0; // set interrupt flag to 0
     _AD1IP = 1   //set interrupt priority to high
     _AD1IE = 1; //enable interrupt
@@ -92,7 +92,7 @@ void setup(void)
     AD1CON1bits.ADON = 1; 
     T3COnbits.TON = 1;
     
-    initialize input capture for the joystick
+    //initialize input capture for the joystick
     __builtin_write_OSCCONL (OSCCON & 0xbf);
     RPIN7bits.IC2R = 8; // ic2 is associated with RB8
     __builtin_write_OSCCONL (OSCCON | 0x40);
