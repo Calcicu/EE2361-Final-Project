@@ -39,10 +39,18 @@ void __attribute__((__interrupt__,__auto_psv__)) _I2CInterrupt(void)
 void __attribute__((__interrupt__,__auto_psv__)) _I2CInterrupt(void)
 {
   // interrupt for the 3rd button
+  
+  
 }
 
 void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 {
+  if ( AD1CONBUF0 > 1.7)
+    //this is up
+    
+  else if (ADC1CONBUF0 < 1.3)
+    //this is up down
+     
   _AD1IF = 0;
 }
 
