@@ -69,7 +69,7 @@ void setup(void)
   //TRISB = 
   
   
-  //initialize input capture for push button
+  //initialize input capture for 1st push button
   
   INTCON1bits.NSTDIS = 1; //disables interrupt nesting
   IPC0bits.IC1IP = 4;   // interrupt priority
@@ -83,7 +83,19 @@ void setup(void)
   
   IEC0bits.IC1IE = 1; //enable interrupt
   
+  //initialize input capture for 2nd push button
   
+  INTCON1bits.NSTDIS = 1; //disables interrupt nesting
+  IPC0bits.IC1IP = 4;   // interrupt priority
+ 
+  __builtin_write_OSCCONL (OSCCON & 0xbf);
+  RPIN7bits.IC1R = 9;
+  __builtin_write_OSCCONL (OSCCON | 0x40);
+  
+  IFS0bits.IC1IF = 0;
+  IC1CON = 0x0002;  //capture and interrupt every falling edge
+  
+  IEC0bits.IC1IE = 1; //enable interrupt
  
   
  
