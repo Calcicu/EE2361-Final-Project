@@ -66,42 +66,37 @@ void setup(void)
     _MI2C2IF = 0;
     I2C2CONbits.I2CEN = 1; //enable I2C
   
-  
-  
-  
-  /*initialize ADC for joystick
-    
-    _VCFG = 0;
-    _ADCS = 
-    _ASAM = 1;
-    _SSRC = 0b010;
-    _SAMC = 
-    _SMPI = 0000000000000;
-    
+ 
     TRM3 = 0;
-    T3CON = 
-    PR3 = 
-    T3CONbits.TCKPS = 
-    T3COnbits.TON = 1;
+    T3CON = 0;
+    PR3 = 15999; //show values every 100ms
+    T3CONbits.TCKPS = 0; // prescaer set 1:1
+    
+    _T3IE = 1;
+    _T3IP = 3; // set to low priority , we can change that if we need to
+     _VCFG = 0;
+    
+    
+    _ADCS = 0; // sat auto-sampling time  = 1*Tcy 
+    _ASAM = 1; // set auto-sampling
+    _SSRC = 0b010; // Timer3 compare ends sampling and starts conversionconversion
+    _SAMC = 0b010; // Auto-Sample Time bits = 10 *TAD
+    _SMPI = 0; // Interrupts at the completion of conversion for each sample/convert sequence
+    
     
     initialize interrupt:
     _AD1IF = 0; // set interrupt flag to 0
-    _AD1IP =    //set interrupt priority
+    _AD1IP = 1   //set interrupt priority to high
     _AD1IE = 1; //enable interrupt
     
-    AD1CON1bits.ADON = 1; //
+    AD1CON1bits.ADON = 1; 
+    T3COnbits.TON = 1;
     
     initialize input capture for the joystick
     __builtin_write_OSCCONL (OSCCON & 0xbf);
     RPIN7bits.IC2R = 8; // ic2 is associated with RB8
     __builtin_write_OSCCONL (OSCCON | 0x40);
-    
    
- 
-  
-    
-    
-  */
   
   
 }
