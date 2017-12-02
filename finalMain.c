@@ -64,9 +64,9 @@ int main()
 void setup(void)
 {
   CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
-  AD1PCFG = 0xfffd;
-  //TRISA = 
-  //TRISB = 
+  AD1PCFG = 0xfffd;   //AN0 and AN1 are analog
+  TRISA = 
+  TRISB = 
   
   
   //initialize input capture for 1st push button
@@ -85,17 +85,17 @@ void setup(void)
   
   //initialize input capture for 2nd push button
   
-  INTCON1bits.NSTDIS = 1; //disables interrupt nesting
-  IPC0bits.IC1IP = 4;   // interrupt priority
+  INTCON3bits.NSTDIS = 1; //disables interrupt nesting
+  IPC0bits.IC3IP = 4;   // interrupt priority
  
   __builtin_write_OSCCONL (OSCCON & 0xbf);
-  RPIN7bits.IC1R = 9;
+  RPIN8bits.IC3R = 7;
   __builtin_write_OSCCONL (OSCCON | 0x40);
   
-  IFS0bits.IC1IF = 0;
-  IC1CON = 0x0002;  //capture and interrupt every falling edge
+  IFS0bits.IC3IF = 0;
+  IC3CON = 0x0002;  //capture and interrupt every falling edge
   
-  IEC0bits.IC1IE = 1; //enable interrupt
+  IEC0bits.IC3IE = 1; //enable interrupt
  
   
  
@@ -107,6 +107,7 @@ void setup(void)
     _MI2C2IF = 0;
     I2C2CONbits.I2CEN = 1; //enable I2C
   
+  // initialize timer 3
  
     TRM3 = 0;
     T3CON = 0;
@@ -115,9 +116,8 @@ void setup(void)
     
     _T3IE = 1;
     _T3IP = 3; // set to low priority , we can change that if we need to
-     _VCFG = 0;
     
-    
+    _VCFG = 0;
     _ADCS = 0; // sat auto-sampling time  = 1*Tcy 
     _ASAM = 1; // set auto-sampling
     _SSRC = 0b010; // Timer3 compare ends sampling and starts conversionconversion
@@ -125,7 +125,7 @@ void setup(void)
     _SMPI = 0; // Interrupts at the completion of conversion for each sample/convert sequence
     
     
-   // initialize interrupt:
+   // initialize interrupt for A/D:
     _AD1IF = 0; // set interrupt flag to 0
     _AD1IP = 1   //set interrupt priority to high
     _AD1IE = 1; //enable interrupt
@@ -134,10 +134,19 @@ void setup(void)
     T3COnbits.TON = 1;
     
     //initialize input capture for the joystick
+  
+   INTCON2bits.NSTDIS = 1; //disables interrupt nesting
+  IPC0bits.IC2IP = 4;   // interrupt priority
+ 
+  
     __builtin_write_OSCCONL (OSCCON & 0xbf);
     RPIN7bits.IC2R = 8; // ic2 is associated with RB8
     __builtin_write_OSCCONL (OSCCON | 0x40);
-   
+ 
   
+  IFS0bits.IC2IF = 0;
+  IC3CON = 0x0002;  //capture and interrupt every falling edge
   
+  IEC0bits.IC2IE = 1; //enable interrupt
+ 
 }
