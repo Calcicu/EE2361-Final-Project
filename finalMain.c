@@ -53,7 +53,7 @@ void setup(void)
   
   
   /*initialize input capture for push button
-  
+  __builtin_write_OSCCONL (OSCCON & 0xbf
   
   
   */
