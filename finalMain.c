@@ -28,18 +28,23 @@
 
 void setup(void);
 
-void __attribute__((__interrupt__,__auto_psv__)) _I1CInterrupt(void)
+void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
   // interrupt for color button
 }
-void __attribute__((__interrupt__,__auto_psv__)) _I2CInterrupt(void)
+void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
 {
+  //implement flag that determines draw or upload mode
   // interrupt for the joystick
+  // draw mode and select on lcd(for each saved drawing
+  
+  
 }
-void __attribute__((__interrupt__,__auto_psv__)) _I2CInterrupt(void)
+void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
 {
   // interrupt for the 3rd button
-  
+  // in draw mode togles on and off
+  // in u0pload mode save button to certain array
   
 }
 
@@ -48,9 +53,15 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
   if ( AD1CONBUF0 > 1.7)
     //this is up
     
-  else if (ADC1CONBUF0 < 1.3)
+  else if (AD1CCONBUF0 < 1.3)
     //this is up down
      
+    if ( AD1CONBUF1 > 1.7)
+    //this is right
+    
+  else if (ADC1CONBUF1 < 1.3)
+    //this is up left
+    
   _AD1IF = 0;
 }
 
@@ -73,8 +84,8 @@ void setup(void)
 {
   CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
   AD1PCFG = 0xfffd;   //AN0 and AN1 are analog
-  TRISA = 
-  TRISB = 
+  TRISA = 0b0000000000000000
+  TRISB = 0b0000000000000000
   
   
   //initialize input capture for 1st push button
@@ -130,7 +141,7 @@ void setup(void)
     _ASAM = 1; // set auto-sampling
     _SSRC = 0b010; // Timer3 compare ends sampling and starts conversionconversion
     _SAMC = 0b010; // Auto-Sample Time bits = 10 *TAD
-    _SMPI = 0; // Interrupts at the completion of conversion for each sample/convert sequence
+    _SMPI = 0b001; // Interrupts at the completion of conversion for every 2nd sample/convert sequence
     
     
    // initialize interrupt for A/D:
