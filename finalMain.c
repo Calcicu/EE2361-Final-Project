@@ -71,12 +71,12 @@ void setup(void)
   
   /*initialize ADC for joystick
     
-    _VCFG = 
+    _VCFG = 0;
     _ADCS = 
     _ASAM = 1;
     _SSRC = 0b010;
     _SAMC = 
-    _SMPI = 
+    _SMPI = 0000000000000;
     
     TRM3 = 0;
     T3CON = 
