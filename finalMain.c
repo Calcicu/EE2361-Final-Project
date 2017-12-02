@@ -78,11 +78,17 @@ void setup(void)
   RPIN7bits.IC1R = 9;
   __builtin_write_OSCCONL (OSCCON | 0x40);
   
+  IFS0bits.IC1IF = 0;
+  IC1CON = 0x0002;  //capture and interrupt every falling edge
+  
+  IEC0bits.IC1IE = 1; //enable interrupt
+  
   
  
   
  
   //initialize i2c for LCD and
+  
     I2C2CON = 0;
     I2C2CONbits.DISSLW = 1;
     I2CBRG = 157;
