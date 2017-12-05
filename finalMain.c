@@ -34,6 +34,17 @@ int upFlag = 0;
 int downFLag = 0;
 int changeFlag = 0;
 
+long int red = 000000000000111100000000;
+long int orange =  000001110001100000000000;
+long int yellow = 000011110000111100000000;
+long int green = 000011110000000000000000;
+long int blue = 000000000000000000001111;
+long int purple = 000000000000110000011000;
+long int pink = 000001110001111100001111;
+
+//color button presses
+int colorCount = 0;
+
 void setup(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
@@ -41,40 +52,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
   
   if (modeFlag == 0)
   {
-   /* // C++ code to change LED color need to change to work with the PIC
-    //Setup some colors, probably not inside the interrupt but I'm going to leave these here for now
-    int color0 = //24 bit int
-    int color1 = //24 bit int
-    int color2 = //24 bit int
-    int color3 = //24 bit int
-    
-        ButtonCount = ButtonCount + 1; //counts how many times we've pushed the button, how many times we've entered the interrrupt
-        
-        if(ButtonCount%4 == 0)
-        {
-          // however we set the color (color 0)
-            strip.setPixelColor(0, PixelColorGreen);
-            strip.show();
-        }
-         else if(ButtonCount%4 == 3)
-        {
-          // however we set the color (color 3)
-            strip.setPixelColor(0, PixelColorGold);
-            strip.show();
-        }
-         else if(ButtonCount%4 == 2)
-        {
-          // however we set the color (color 2)
-            strip.setPixelColor(0, PixelColorOrange);
-            strip.show();
-        }
-         else if(ButtonCount%4 == 1)
-        {
-          // however we set the color (color 1)
-            strip.setPixelColor(0, PixelColorRed);
-            strip.show();
-        }*/
-    
+    ++colorCount;
   }
   else
   {
