@@ -35,13 +35,13 @@ int downFLag = 0;
 int changeFlag = 0;
 int cursorRightLCD = 0;
 
-long int red = 000000000000111100000000;
-long int orange =  000001110001100000000000;
-long int yellow = 000011110000111100000000;
-long int green = 000011110000000000000000;
-long int blue = 000000000000000000001111;
-long int purple = 000000000000110000011000;
-long int pink = 000001110001111100001111;
+long int red = 0b000000000000111100000000;
+long int orange =  0b000001110001100000000000;
+long int yellow = 0b000011110000111100000000;
+long int green = 0b000011110000000000000000;
+long int blue = 0b000000000000000000001111;
+long int purple = 0b000000000000110000011000;
+long int pink = 0b000001110001111100001111;
 
 //color button presses
 int colorCount = 0;
@@ -179,7 +179,7 @@ int main()
     
     //Process flags (update cursor position, update color values, etc.)
   
-    lcdDisplayCursor;
+    lcdDisplayCursor();
       
     //every 2ms:
     // 1. disable interrupts 
@@ -286,7 +286,7 @@ void setup(void)
 void lcdDisplayCursor(void)
 {
   //enable cursor
-  setCursor(1,0)
+  setCursor(1,0);
   lcdPrintScreen(" 1 2 3 ");
   
   if (cursorRightLCD == 0)
