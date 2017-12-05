@@ -36,7 +36,55 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
   
   if (modeFlag = 0)
   {
-    // code for change the color with the button presses
+   /* // C++ code to change LED color need to change to work with the PIC
+    //Setup some colors
+    int PixelColorRed  = strip.Color( 80,   0,   4);
+    int PixelColorOrange = strip.Color( 255, 130, 0);
+    int PixelColorGold = strip.Color(  60,  50,   5);
+    int PixelColorGreen = strip.Color( 0, 204, 0);
+    int PixelColorBlue = strip.Color(   75,   255, 244);
+    int PixelColorPink = strip.Color( 255, 0, 51);
+    int PixelColorPurple = strip.Color(196, 0 , 255);
+    
+    
+        ButtonCount = ButtonCount + 1;
+        
+        if(ButtonCount%7 == 0)
+        {
+             strip.setPixelColor(0, PixelColorPink);
+             strip.show();
+        }
+        else if(ButtonCount%7 == 6)
+        {
+            strip.setPixelColor(0, PixelColorPurple);
+             strip.show();
+        }
+         else if(ButtonCount%7 == 5)
+        {
+            strip.setPixelColor(0, PixelColorBlue);
+             strip.show();
+        }
+         else if(ButtonCount%7 == 4)
+        {
+            strip.setPixelColor(0, PixelColorGreen);
+             strip.show();
+        }
+         else if(ButtonCount%7 == 3)
+        {
+            strip.setPixelColor(0, PixelColorGold);
+             strip.show();
+        }
+         else if(ButtonCount%7 == 2)
+        {
+            strip.setPixelColor(0, PixelColorOrange);
+             strip.show();
+        }
+         else if(ButtonCount%7 == 1)
+        {
+            strip.setPixelColor(0, PixelColorRed);
+             strip.show();
+        }*/
+    
   }
   else
   {
