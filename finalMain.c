@@ -115,6 +115,8 @@ void __attribute__((__interrupt__,__auto_psv__)) _T3Interrupt(void)
 
 int main()
 {
+  setup();
+  
   while(1)
   {     
     // 1. refreshing loop for the LED every 2 ms 
@@ -127,8 +129,8 @@ void setup(void)
 {
   CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
   AD1PCFG = 0xfffd;   //AN0 and AN1 are analog
-  TRISA = 0b0000000000000000
-  TRISB = 0b0000000000000000
+  TRISA = 0b0000000000000000 //TRISA still needs to be set
+  TRISB = 0b0000000000000000 // TRISA still needs to be set
   
   
   //initialize input capture for 1st push button
@@ -157,9 +159,7 @@ void setup(void)
   IFS0bits.IC3IF = 0;
   IC3CON = 0x0002;  //capture and interrupt every falling edge
   
-  IEC0bits.IC3IE = 1; //enable interrupt
- 
-  
+  IEC0bits.IC3IE = 1; //enable interrupt  
  
   //initialize i2c for LCD and
   
@@ -197,7 +197,7 @@ void setup(void)
     
     //initialize input capture for the joystick
   
-   INTCON2bits.NSTDIS = 1; //disables interrupt nesting
+  INTCON2bits.NSTDIS = 1; //disables interrupt nesting
   IPC0bits.IC2IP = 4;   // interrupt priority
  
   
