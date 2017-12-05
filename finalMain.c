@@ -126,7 +126,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
     if (modeFlag = 1)
     {
       cursorRightLCD = cursorRightLCD++ & 0b111;  // counts from 0 to 2 then wraps back around
-      
+    }
     
 
   }
@@ -178,7 +178,8 @@ int main()
     }
     
     //Process flags (update cursor position, update color values, etc.)
-
+  
+    lcdDisplayCursor;
       
     //every 2ms:
     // 1. disable interrupts 
