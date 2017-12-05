@@ -26,7 +26,13 @@
                                         // Fail-Safe Clock Monitor is enabled)
 #pragma config FNOSC = FRCPLL       // Oscillator Select (Fast RC Oscillator with PLL module (FRCPLL))
 
-volitile int modeFlag = 0;
+int modeFlag = 0; // Mode starts in the drawing mode
+int ledFlag = 0; // LED starts as off
+int rightFlag = 0;
+int leftFlag = 0;
+int upFlag = 0;
+int downFLag = 0;
+int changeFlag = 0;
 
 void setup(void);
 
@@ -35,12 +41,47 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
   
   if (modeFlag = 0)
   {
-    // code for change the color with the button presses
+   /* // C++ code to change LED color need to change to work with the PIC
+    //Setup some colors, probably not inside the interrupt but I'm going to leave these here for now
+    int color0 = //24 bit int
+    int color1 = //24 bit int
+    int color2 = //24 bit int
+    int color3 = //24 bit int
+    
+        ButtonCount = ButtonCount + 1; //counts how many times we've pushed the button, how many times we've entered the interrrupt
+        
+        if(ButtonCount%4 == 0)
+        {
+          // however we set the color (color 0)
+            strip.setPixelColor(0, PixelColorGreen);
+            strip.show();
+        }
+         else if(ButtonCount%4 == 3)
+        {
+          // however we set the color (color 3)
+            strip.setPixelColor(0, PixelColorGold);
+            strip.show();
+        }
+         else if(ButtonCount%4 == 2)
+        {
+          // however we set the color (color 2)
+            strip.setPixelColor(0, PixelColorOrange);
+            strip.show();
+        }
+         else if(ButtonCount%4 == 1)
+        {
+          // however we set the color (color 1)
+            strip.setPixelColor(0, PixelColorRed);
+            strip.show();
+        }*/
+    
   }
   else
   {
     // code for saving the matrix to an array
   }
+  
+  _IC1IF = 0;
   
 }
 void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
@@ -55,13 +96,15 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
     modeFlag = 0; //draw mode
   }
   
+  _IC2IF = 0;
   
 }
 void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
 {
   // interrupt for the 3rd button
   // in draw mode togles on and off
-  // in u0pload mode save button to certain array
+  // in upload mode save button to certain array
+ 
   
    if (modeFlag = 0)
   {
@@ -72,24 +115,43 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
     // code for uploading pictoral to LED
   }
   
-  
+  _IC3IF = 0;
   
 }
 
 void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 {
+
+    //change flag?
+  
   if ( AD1CONBUF0 > 1.7)
+  {
     //this is up
-    
+    upFLag = 1;
+   
+  }
+  
   else if (AD1CCONBUF0 < 1.3)
+  {
     //this is up down
+    downFLag = 1;
+  
+  }
      
-    if ( AD1CONBUF1 > 1.7)
+  if ( AD1CONBUF1 > 1.7)
+  {
     //this is right
-    
+    rightFlag = 1;
+
+  }
+  
   else if (ADC1CONBUF1 < 1.3)
+  {
     //this is up left
+    leftFlag = 1;
     
+  }
+  
   _AD1IF = 0;
 }
 
@@ -104,6 +166,8 @@ void __attribute__((__interrupt__,__auto_psv__)) _T3Interrupt(void)
 
 int main()
 {
+  setup();
+  
   while(1)
   {
    
@@ -128,8 +192,13 @@ int main()
     }
     
     //Process flags (update cursor position, update color values, etc.)
-    
-    
+
+    //every 2ms:
+    // 1. disable interrupts 
+    // 2. refresh LED  
+    // 3. put the conditions that set the flags and the interrupts
+              //jat_wait_1ms(); 
+              //jat_wait_1ms();
   }
   return 0;
 }
@@ -138,8 +207,8 @@ void setup(void)
 {
   CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
   AD1PCFG = 0xfffd;   //AN0 and AN1 are analog
-  TRISA = 0b0000000000000000
-  TRISB = 0b0000000000000000
+  TRISA = 0b0000000000000000 //TRISA still needs to be set
+  TRISB = 0b0000000000000000 // TRISA still needs to be set
   
   
   //initialize input capture for 1st push button
@@ -166,11 +235,9 @@ void setup(void)
   __builtin_write_OSCCONL (OSCCON | 0x40);
   
   IFS0bits.IC3IF = 0;
-  IC3CON = 0x0002;  //capture and interrupt every falling edge
+  IC3CON = 0x0003;  //capture and interrupt every rising edge
   
-  IEC0bits.IC3IE = 1; //enable interrupt
- 
-  
+  IEC0bits.IC3IE = 1; //enable interrupt  
  
   //initialize i2c for LCD and
   
@@ -208,7 +275,7 @@ void setup(void)
     
     //initialize input capture for the joystick
   
-   INTCON2bits.NSTDIS = 1; //disables interrupt nesting
+  INTCON2bits.NSTDIS = 1; //disables interrupt nesting
   IPC0bits.IC2IP = 4;   // interrupt priority
  
   
