@@ -184,8 +184,8 @@ void setup(void)
 {
   CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
   AD1PCFG = 0xfffd;   //AN0 and AN1 are analog
-  TRISA = 0b0000000000000000 //TRISA still needs to be set
-  TRISB = 0b0000000000000000 // TRISA still needs to be set
+  TRISA = 0b0000000000000011 //TRISA still needs to be set
+  TRISB = 0b00000001110000011 // TRISA still needs to be set
   
     // pullup resistors
     _CN21PUE = 1; //enable pullup resostor for RB9
