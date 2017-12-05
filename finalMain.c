@@ -1,5 +1,5 @@
 /* 
- * File:   finalMain.c
+ * File:   thom6223_lab5main.c
  * Author: Jake Thompson, Carol Svare, Mai Hashad, Rachel Chadwick
  *
  * Created on November 29, 2017, 4:00 PM
@@ -34,63 +34,46 @@ int upFlag = 0;
 int downFLag = 0;
 int changeFlag = 0;
 
-//Global variables for colors
-int red = 000000000000111100000000;
-int orange =  000001110001100000000000;
-int yellow = 000011110000111100000000;
-int green = 000011110000000000000000;
-int blue = 000000000000000000001111;
-int purple = 000000000000110000011000;
-int pink = 000001110001111100001111;
-
-
 void setup(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
   
-  if (modeFlag = 0)
+  if (modeFlag == 0)
   {
    /* // C++ code to change LED color need to change to work with the PIC
-        
+    //Setup some colors, probably not inside the interrupt but I'm going to leave these here for now
+    int color0 = //24 bit int
+    int color1 = //24 bit int
+    int color2 = //24 bit int
+    int color3 = //24 bit int
+    
         ButtonCount = ButtonCount + 1; //counts how many times we've pushed the button, how many times we've entered the interrrupt
         
-        if(ButtonCount%7 == 0)
+        if(ButtonCount%4 == 0)
         {
-          // however we set the color red
-
+          // however we set the color (color 0)
+            strip.setPixelColor(0, PixelColorGreen);
+            strip.show();
         }
-        else if(ButtonCount%7 == 6)
+         else if(ButtonCount%4 == 3)
         {
-          // however we set the color orange
-            
+          // however we set the color (color 3)
+            strip.setPixelColor(0, PixelColorGold);
+            strip.show();
         }
-         else if(ButtonCount%7 == 5)
+         else if(ButtonCount%4 == 2)
         {
-          // however we set the color yellow
-           
+          // however we set the color (color 2)
+            strip.setPixelColor(0, PixelColorOrange);
+            strip.show();
         }
-         else if(ButtonCount%7== 4)
+         else if(ButtonCount%4 == 1)
         {
-          // however we set the color green
-            
-        }
-         else if(ButtonCount%7 == 3)
-        {
-          // however we set the color blue
-           
-        }
-         else if(ButtonCount%7== 2)
-        {
-          // however we set the color purple
-            
-        }
-         else if(ButtonCount%7== 1)
-        {
-          // however we set the color pink
-           
-        }
-        */
+          // however we set the color (color 1)
+            strip.setPixelColor(0, PixelColorRed);
+            strip.show();
+        }*/
     
   }
   else
@@ -104,7 +87,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
 {
   
-  if (modeFlag = 0)
+  if (modeFlag == 0)
   {
     modeFlag = 1; // upload/save mode
   }
@@ -123,7 +106,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   // in upload mode save button to certain array
  
   
-   if (modeFlag = 0)
+   if (modeFlag == 0)
   {
     // code for turning in and off led
   }
@@ -141,28 +124,28 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 
     //change flag?
   
-  if ( AD1CONBUF0 > 1.7)
+  if ( ADC1BUF0 > 1.7)
   {
     //this is up
-    upFLag = 1;
+    upFlag = 1;
    
   }
   
-  else if (AD1CCONBUF0 < 1.3)
+  else if (ADC1BUF0 < 1.3)
   {
     //this is up down
     downFLag = 1;
   
   }
      
-  if ( AD1CONBUF1 > 1.7)
+  if ( ADC1BUF1 > 1.7)
   {
     //this is right
     rightFlag = 1;
 
   }
   
-  else if (ADC1CONBUF1 < 1.3)
+  else if (ADC1BUF1 < 1.3)
   {
     //this is up left
     leftFlag = 1;
@@ -186,9 +169,9 @@ int main()
   setup();
   
   while(1)
-  {
-   
-    //Refresh display (Estimated ~2ms)
+  {  
+      
+    /*   //Refresh display (Estimated ~2ms)
     
     if (_RB9 = 1){    //if save/cycle color was pressed during refresh
       if (!modeFlag)
@@ -210,12 +193,13 @@ int main()
     
     //Process flags (update cursor position, update color values, etc.)
 
+      
     //every 2ms:
     // 1. disable interrupts 
     // 2. refresh LED  
     // 3. put the conditions that set the flags and the interrupts
               //jat_wait_1ms(); 
-              //jat_wait_1ms();
+              //jat_wait_1ms();*/
   }
   return 0;
 }
@@ -224,8 +208,8 @@ void setup(void)
 {
   CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
   AD1PCFG = 0xfffd;   //AN0 and AN1 are analog
-  TRISA = 0b0000000000000011 //TRISA still needs to be set
-  TRISB = 0b00000001110000011 // TRISA still needs to be set
+  TRISA = 0b0000000000000011; //TRISA still needs to be set
+  TRISB = 0b00000001110000011; // TRISA still needs to be set
   
     // pullup resistors
     _CN21PUE = 1; //enable pullup resostor for RB9
@@ -238,7 +222,7 @@ void setup(void)
   IPC0bits.IC1IP = 4;   // interrupt priority
  
   __builtin_write_OSCCONL (OSCCON & 0xbf);
-  RPIN7bits.IC1R = 9;
+  RPINR7bits.IC1R = 9;
   __builtin_write_OSCCONL (OSCCON | 0x40);
   
   IFS0bits.IC1IF = 0;
@@ -248,29 +232,29 @@ void setup(void)
   
   //initialize input capture for 2nd push button
   
-  INTCON3bits.NSTDIS = 1; //disables interrupt nesting
-  IPC0bits.IC3IP = 4;   // interrupt priority
+  INTCON1bits.NSTDIS = 1; //disables interrupt nesting
+  _IC3IP = 4;   // interrupt priority
  
   __builtin_write_OSCCONL (OSCCON & 0xbf);
-  RPIN8bits.IC3R = 7;
+  RPINR8bits.IC3R = 7;
   __builtin_write_OSCCONL (OSCCON | 0x40);
   
-  IFS0bits.IC3IF = 0;
+  _IC3IF = 0;
   IC3CON = 0x0003;  //capture and interrupt every rising edge
   
-  IEC0bits.IC3IE = 1; //enable interrupt  
+  _IC3IE = 1; //enable interrupt  
  
   //initialize i2c for LCD and
   
     I2C2CON = 0;
     I2C2CONbits.DISSLW = 1;
-    I2CBRG = 157;
+    I2C2BRG = 157;
     _MI2C2IF = 0;
     I2C2CONbits.I2CEN = 1; //enable I2C
   
   // initialize timer 3
  
-    TRM3 = 0;
+    TMR3 = 0;
     T3CON = 0;
     PR3 = 15999; //show values every 100ms
     T3CONbits.TCKPS = 0; // prescaer set 1:1
@@ -288,20 +272,20 @@ void setup(void)
     
    // initialize interrupt for A/D:
     _AD1IF = 0; // set interrupt flag to 0
-    _AD1IP = 1   //set interrupt priority to high
+    _AD1IP = 1;   //set interrupt priority to high
     _AD1IE = 1; //enable interrupt
     
     AD1CON1bits.ADON = 1; 
-    T3COnbits.TON = 1;
+    T3CONbits.TON = 1;
     
     //initialize input capture for the joystick
   
-  INTCON2bits.NSTDIS = 1; //disables interrupt nesting
-  IPC0bits.IC2IP = 4;   // interrupt priority
+  INTCON1bits.NSTDIS = 1; //disables interrupt nesting
+  _IC2IP = 4;   // interrupt priority
  
   
     __builtin_write_OSCCONL (OSCCON & 0xbf);
-    RPIN7bits.IC2R = 8; // ic2 is associated with RB8
+    RPINR7bits.IC2R = 8; // ic2 is associated with RB8
     __builtin_write_OSCCONL (OSCCON | 0x40);
  
   
