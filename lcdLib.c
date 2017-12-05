@@ -33,7 +33,7 @@ void lcd_init(void){
     lcd_cmd(0b01101100);    //follower control
     waitms(200);
     lcd_cmd(0b00111000);    //function set, normal instruction mode
-    lcd_cmd(0b00001111);    //display on
+    lcd_cmd(0b00001111);    //display on also tuen on blinking cursor
     lcd_cmd(0b00000001);    //clear display
     waitms(5);
 }
