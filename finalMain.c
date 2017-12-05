@@ -33,6 +33,7 @@ int leftFlag = 0;
 int upFlag = 0;
 int downFLag = 0;
 int changeFlag = 0;
+int cursorRightLCD = 0;
 
 long int red = 000000000000111100000000;
 long int orange =  000001110001100000000000;
@@ -46,7 +47,7 @@ long int pink = 000001110001111100001111;
 int colorCount = 0;
 
 void setup(void);
-void lcdDisplay(void);
+void lcdDisplayCursor(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
@@ -121,6 +122,12 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
   {
     //this is right
     rightFlag = 1;
+      
+    if (modeFlag = 1)
+    {
+      cursorRightLCD = cursorRightLCD++ & 0b111;  // counts from 0 to 2 then wraps back around
+      
+    
 
   }
   
@@ -275,13 +282,27 @@ void setup(void)
  
 }
 
-void lcdDisplay(void)
+void lcdDisplayCursor(void)
 {
   //enable cursor
-  setCursor(0,0)
+  setCursor(1,0)
   lcdPrintScreen(" 1 2 3 ");
   
-  if (
-
-}
+  if (cursorRightLCD == 0)
+  {
+   setCursor(1,0);
+  }
+  else if (cursorRightLCD == 1)
+  {
+    setCursor(3,0);
+  }
+  else 
+  {
+    setCursor(5,0);
+  }
+  
+  
+    //variable displayed as sting bust used as code a integer
+    
+ }
 
