@@ -119,11 +119,13 @@ int main()
   setup();
   
   while(1)
-  {     
-    // 1. refreshing loop for the LED every 2 ms   
+  {  
+    //every 2ms:
+    // 1. disable interrupts 
+    // 2. refresh LED  
+    // 3. put the conditions that set the flags and the interrupts
               //jat_wait_1ms(); 
               //jat_wait_1ms();
-    // 2. conditions that set the flags and the interrupts
   }
   return 0;
 }
