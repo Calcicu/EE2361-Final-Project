@@ -26,8 +26,13 @@
                                         // Fail-Safe Clock Monitor is enabled)
 #pragma config FNOSC = FRCPLL       // Oscillator Select (Fast RC Oscillator with PLL module (FRCPLL))
 
-int modeFlag = 0;
-int LED = 0; //
+int modeFlag = 0; // Mode starts in the drawing mode
+int ledFlag = 0; // LED starts as off
+int rightFlag = 0;
+int leftFlag = 0;
+int upFlag = 0;
+int downFLag = 0;
+int changeFlag = 0;
 
 void setup(void);
 
@@ -83,24 +88,35 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
 
 void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 {
+
+    //change flag?
+  
   if ( AD1CONBUF0 > 1.7)
   {
     //this is up
+    upFLag = 1;
+   
   }
   
   else if (AD1CCONBUF0 < 1.3)
   {
     //this is up down
+    downFLag = 1;
+  
   }
      
   if ( AD1CONBUF1 > 1.7)
   {
     //this is right
+    rightFlag = 1;
+
   }
   
   else if (ADC1CONBUF1 < 1.3)
   {
     //this is up left
+    leftFlag = 1;
+    
   }
   
   _AD1IF = 0;
