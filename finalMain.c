@@ -37,52 +37,37 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
   if (modeFlag = 0)
   {
    /* // C++ code to change LED color need to change to work with the PIC
-    //Setup some colors
-    int PixelColorRed  = strip.Color( 80,   0,   4);
-    int PixelColorOrange = strip.Color( 255, 130, 0);
-    int PixelColorGold = strip.Color(  60,  50,   5);
-    int PixelColorGreen = strip.Color( 0, 204, 0);
-    int PixelColorBlue = strip.Color(   75,   255, 244);
-    int PixelColorPink = strip.Color( 255, 0, 51);
-    int PixelColorPurple = strip.Color(196, 0 , 255);
+    //Setup some colors, probably not inside the interrupt but I'm going to leave these here for now
+    int color0 = //24 bit int
+    int color1 = //24 bit int
+    int color2 = //24 bit int
+    int color3 = //24 bit int
     
-    
-        ButtonCount = ButtonCount + 1;
+        ButtonCount = ButtonCount + 1; //counts how many times we've pushed the button, how many times we've entered the interrrupt
         
-        if(ButtonCount%7 == 0)
+        if(ButtonCount%4 == 0)
         {
-             strip.setPixelColor(0, PixelColorPink);
-             strip.show();
-        }
-        else if(ButtonCount%7 == 6)
-        {
-            strip.setPixelColor(0, PixelColorPurple);
-             strip.show();
-        }
-         else if(ButtonCount%7 == 5)
-        {
-            strip.setPixelColor(0, PixelColorBlue);
-             strip.show();
-        }
-         else if(ButtonCount%7 == 4)
-        {
+          // however we set the color (color 0)
             strip.setPixelColor(0, PixelColorGreen);
-             strip.show();
+            strip.show();
         }
-         else if(ButtonCount%7 == 3)
+         else if(ButtonCount%4 == 3)
         {
+          // however we set the color (color 3)
             strip.setPixelColor(0, PixelColorGold);
-             strip.show();
+            strip.show();
         }
-         else if(ButtonCount%7 == 2)
+         else if(ButtonCount%4 == 2)
         {
+          // however we set the color (color 2)
             strip.setPixelColor(0, PixelColorOrange);
-             strip.show();
+            strip.show();
         }
-         else if(ButtonCount%7 == 1)
+         else if(ButtonCount%4 == 1)
         {
+          // however we set the color (color 1)
             strip.setPixelColor(0, PixelColorRed);
-             strip.show();
+            strip.show();
         }*/
     
   }
