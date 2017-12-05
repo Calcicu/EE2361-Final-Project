@@ -65,12 +65,14 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   
    if (modeFlag = 0)
   {
-    // 
+    // code for 
   }
   else
   {
     // 
   }
+  
+  
   
 }
 
@@ -102,7 +104,10 @@ void __attribute__((__interrupt__,__auto_psv__)) _T3Interrupt(void)
 
 int main()
 {
-  
+  while(1)
+  {
+    
+  }
   return 0;
 }
 
