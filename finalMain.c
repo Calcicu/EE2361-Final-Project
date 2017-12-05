@@ -187,6 +187,10 @@ void setup(void)
   TRISA = 0b0000000000000000 //TRISA still needs to be set
   TRISB = 0b0000000000000000 // TRISA still needs to be set
   
+    // pullup resistors
+    _CN21PUE = 1; //enable pullup resostor for RB9
+    _CN22PUE = 1; //enable pullup resister for RB8
+    _CN23PUE = 1; //enable pullup resister for RB7
   
   //initialize input capture for 1st push button
   
