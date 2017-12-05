@@ -33,7 +33,7 @@ void setup(void);
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
   
-  if (modeFlag = 0)
+  if (modeFlag == 0)
   {
     // code for change the color with the button presses
   }
@@ -48,7 +48,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
 {
   
-  if (modeFlag = 0)
+  if (modeFlag == 0)
   {
     modeFlag = 1; // upload/save mode
   }
@@ -66,9 +66,9 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   // in draw mode togles on and off
   // in u0pload mode save button to certain array
   
-   if (modeFlag = 0)
+   if (modeFlag == 0)
   {
-    // code for turning in and off led
+    if (LED == 1
   }
   else
   {
