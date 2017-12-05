@@ -72,11 +72,13 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
     // toggles LED on and off depending on the previous state
      if (LED == 0)
      {
-       LED = 1;
+       // code for actually turning the LED off
+       LED = 1; // sets flag
      }
      else 
      {
-       LED = 0; turns off LED
+       //code for actually turing the LED off
+       LED = 0; // resets flag
      }
   }
   else
