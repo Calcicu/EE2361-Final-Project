@@ -65,11 +65,11 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   
    if (modeFlag = 0)
   {
-    // code for 
+    // code for turning in and off led
   }
   else
   {
-    // 
+    // code for uploading pictoral to LED
   }
   
   
