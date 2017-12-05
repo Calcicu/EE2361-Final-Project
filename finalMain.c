@@ -46,6 +46,7 @@ long int pink = 000001110001111100001111;
 int colorCount = 0;
 
 void setup(void);
+void lcdDisplay(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
@@ -273,3 +274,14 @@ void setup(void)
   IEC0bits.IC2IE = 1; //enable interrupt
  
 }
+
+void lcdDisplay(void)
+{
+  //enable cursor
+  setCursor(0,0)
+  lcdPrintScreen(" 1 2 3 ");
+  
+  if (
+
+}
+
