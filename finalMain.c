@@ -65,10 +65,18 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   // interrupt for the 3rd button
   // in draw mode togles on and off
   // in u0pload mode save button to certain array
+  LED = 0;  // current LED is off
   
    if (modeFlag == 0)
   {
-    if (LED == 1
+     // toggles the led on or off based on the previous state
+     
+    if (LED == 0)
+    {
+      LED = 1;  // turn on LED
+    }
+    else 
+      LED = 0;  // LED is off
   }
   else
   {
