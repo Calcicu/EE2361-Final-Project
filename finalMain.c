@@ -65,11 +65,19 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   // interrupt for the 3rd button
   // in draw mode togles on and off
   // in upload mode save button to certain array
-  volitile int LED = 0; //
+  volitile int LED = 0; //LED starts as off
   
    if (modeFlag = 0)
   {
-    // code for turning in and off led
+    // toggles LED on and off depending on the previous state
+     if (LED == 0)
+     {
+       LED = 1;
+     }
+     else 
+     {
+       LED = 0; turns off LED
+     }
   }
   else
   {
