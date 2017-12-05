@@ -65,6 +65,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   // interrupt for the 3rd button
   // in draw mode togles on and off
   // in upload mode save button to certain array
+  volitile int LED = 0; //
   
    if (modeFlag = 0)
   {
@@ -157,7 +158,7 @@ void setup(void)
   __builtin_write_OSCCONL (OSCCON | 0x40);
   
   IFS0bits.IC3IF = 0;
-  IC3CON = 0x0002;  //capture and interrupt every falling edge
+  IC3CON = 0x0003;  //capture and interrupt every rising edge
   
   IEC0bits.IC3IE = 1; //enable interrupt  
  
