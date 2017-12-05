@@ -33,7 +33,7 @@ void setup(void);
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
   
-  if (modeFlag == 0)
+  if (modeFlag = 0)
   {
     // code for change the color with the button presses
   }
@@ -48,7 +48,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
 {
   
-  if (modeFlag == 0)
+  if (modeFlag = 0)
   {
     modeFlag = 1; // upload/save mode
   }
@@ -64,19 +64,11 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
 {
   // interrupt for the 3rd button
   // in draw mode togles on and off
-  // in u0pload mode save button to certain array
-  LED = 0;  // current LED is off
+  // in upload mode save button to certain array
   
-   if (modeFlag == 0)
+   if (modeFlag = 0)
   {
-     // toggles the led on or off based on the previous state
-     
-    if (LED == 0)
-    {
-      LED = 1;  // turn on LED
-    }
-    else 
-      LED = 0;  // LED is off
+    // code for turning in and off led
   }
   else
   {
@@ -95,12 +87,14 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
   }
   
   else if (AD1CCONBUF0 < 1.3)
+  {
     //this is up down
+  }
      
-    if ( AD1CONBUF1 > 1.7)
-    {
+  if ( AD1CONBUF1 > 1.7)
+  {
     //this is right
-    }
+  }
   
   else if (ADC1CONBUF1 < 1.3)
   {
@@ -122,8 +116,9 @@ void __attribute__((__interrupt__,__auto_psv__)) _T3Interrupt(void)
 int main()
 {
   while(1)
-  {
-    
+  {     
+    // 1. refreshing loop for the LED every 2 ms 
+    // 2. conditions that set the flags and the interrupts
   }
   return 0;
 }
