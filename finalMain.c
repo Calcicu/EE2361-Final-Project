@@ -65,21 +65,11 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   // interrupt for the 3rd button
   // in draw mode togles on and off
   // in upload mode save button to certain array
-  volitile int LED = 0; //LED starts as off
+  volitile int LED = 0; //
   
    if (modeFlag = 0)
   {
-    // toggles LED on and off depending on the previous state
-     if (LED == 0)
-     {
-       // code for actually turning the LED off
-       LED = 1; // sets flag
-     }
-     else 
-     {
-       //code for actually turing the LED off
-       LED = 0; // resets flag
-     }
+    // code for turning in and off led
   }
   else
   {
@@ -130,7 +120,9 @@ int main()
   
   while(1)
   {     
-    // 1. refreshing loop for the LED every 2 ms 
+    // 1. refreshing loop for the LED every 2 ms   
+              //jat_wait_1ms(); 
+              //jat_wait_1ms();
     // 2. conditions that set the flags and the interrupts
   }
   return 0;
