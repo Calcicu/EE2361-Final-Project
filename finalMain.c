@@ -1,5 +1,5 @@
 /* 
- * File:   thom6223_lab5main.c
+ * File:   finalMain.c
  * Author: Jake Thompson, Carol Svare, Mai Hashad, Rachel Chadwick
  *
  * Created on November 29, 2017, 4:00 PM
@@ -191,7 +191,30 @@ int main()
   setup();
   
   while(1)
-  {  
+  {
+   
+    //Refresh display (Estimated ~2ms)
+    
+    if (_RB9 = 1){    //if save/cycle color was pressed during refresh
+      if (!modeFlag)
+        //set save flag
+      else
+        //set cycle color flag
+    }//end if _RB9 = 1
+    
+    if (_RB7 = 1){    //if load/draw was pressed during refresh
+      if (!modeFlag)
+        //set load flag
+      else
+        //set draw flag
+    }//end if _RB7 = 1
+    
+    if (_RB8 = 1){    //if toggle mode was pressed during refresh
+      //set toggleModeFlag
+    }
+    
+    //Process flags (update cursor position, update color values, etc.)
+
     //every 2ms:
     // 1. disable interrupts 
     // 2. refresh LED  
