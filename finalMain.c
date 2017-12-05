@@ -26,17 +26,34 @@
                                         // Fail-Safe Clock Monitor is enabled)
 #pragma config FNOSC = FRCPLL       // Oscillator Select (Fast RC Oscillator with PLL module (FRCPLL))
 
+volitile int modeFlag = 0;
+
 void setup(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
-  // interrupt for color button
+  
+  if (modeFlag = 0)
+  {
+    // code for change the color with the button presses
+  }
+  else
+  {
+    // code for saving the matrix to an array
+  }
+  
 }
 void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
 {
-  //implement flag that determines draw or upload mode
-  // interrupt for the joystick
-  // draw mode and select on lcd(for each saved drawing
+  
+  if (modeFlag = 0)
+  {
+    modeFlag = 1; // upload/save mode
+  }
+  else 
+  {
+    modeFlag = 0; //draw mode
+  }
   
   
 }
@@ -45,6 +62,15 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   // interrupt for the 3rd button
   // in draw mode togles on and off
   // in u0pload mode save button to certain array
+  
+   if (modeFlag = 0)
+  {
+    // 
+  }
+  else
+  {
+    // 
+  }
   
 }
 
