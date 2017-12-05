@@ -26,7 +26,8 @@
                                         // Fail-Safe Clock Monitor is enabled)
 #pragma config FNOSC = FRCPLL       // Oscillator Select (Fast RC Oscillator with PLL module (FRCPLL))
 
-volitile int modeFlag = 0;
+int modeFlag = 0;
+int LED = 0; //
 
 void setup(void);
 
@@ -65,7 +66,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   // interrupt for the 3rd button
   // in draw mode togles on and off
   // in upload mode save button to certain array
-  volitile int LED = 0; //
+ 
   
    if (modeFlag = 0)
   {
