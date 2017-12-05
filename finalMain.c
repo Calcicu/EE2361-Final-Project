@@ -42,6 +42,8 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
     // code for saving the matrix to an array
   }
   
+  _IC1IF = 0;
+  
 }
 void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
 {
@@ -55,6 +57,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
     modeFlag = 0; //draw mode
   }
   
+  _IC2IF = 0;
   
 }
 void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
@@ -72,24 +75,30 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
     // code for uploading pictoral to LED
   }
   
-  
+  _IC3IF = 0;
   
 }
 
 void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 {
   if ( AD1CONBUF0 > 1.7)
+  {
     //this is up
-    
+  }
+  
   else if (AD1CCONBUF0 < 1.3)
     //this is up down
      
     if ( AD1CONBUF1 > 1.7)
+    {
     //this is right
-    
+    }
+  
   else if (ADC1CONBUF1 < 1.3)
+  {
     //this is up left
-    
+  }
+  
   _AD1IF = 0;
 }
 
