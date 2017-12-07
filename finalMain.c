@@ -34,7 +34,7 @@ int leftFlag = 0;
 int upFlag = 0;
 int downFLag = 0;
 int changeFlag = 0; //checks if there was a change in the joystick position
-int cursorRightLCD = 0;
+int cursorRightFlag = 0;
 int saveFlag = 0; //save button was pressed
 int loadFlag = 0; //Load button pressed
 int LEDFlag = 0; //Turn LED on/off
@@ -164,34 +164,30 @@ int main()
   
   while(1)
   {  
-      
-    updateArray();
-    /*
+   
+    updateArray();  //This function is timing sensitive, disable interrupts immediately before
     
-    
-    // changes flags if a button was pressed during the refresh mode
+    // changes flags if a button was pressed during updateArray()
     if (_RB9 = 1){    //if save/cycle color was pressed during refresh
       if (!modeFlag)
         //set save flag
         saveFlag = 1;
       else
-        //set cycle color flag
+        colorCount++;
         
     }//end if _RB9 = 1
     
     if (_RB7 = 1){    //if load/draw was pressed during refresh
       if (!modeFlag)
       {
-        //set load flag
-        load flag = 1;
+        loadFlag = 1;
       }
       else
-        //set draw flag
         LEDFlag = 1;
-        }//end if _RB7 = 1
+    }//end if _RB7 = 1
     
     if (_RB8 = 1){    //if toggle mode was pressed during refresh
-      //set toggleModeFlag
+      modeFlag = !modeFlag;
     }
     
     
