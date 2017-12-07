@@ -54,6 +54,7 @@ void lcdDisplayCursor(void);
 void updateArray(void);
 void fillPresetColor(void);
 void saveArray(int saveMode, int arrayNum);
+void draw(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
@@ -247,14 +248,13 @@ int main()
         downFlag = 0;
       } 
       
-      if (LEDFlag)
-      {
+      if (LEDFlag){
+        
+            }//end for color
+        }//end if (current color matches drawing color)
+        
         LEDFlag = 0;
         //turn on led
-      }
-      else if (!LEDFlag)
-      {
-        //turn off LED)
       }
         
       
@@ -548,3 +548,27 @@ void saveArray(int saveMode, int arrayNum){
         }//end arrayNum = 3
     }//end if saveMode == 1 (saving)
 }
+
+void draw(void){
+  int color;
+  int samePixel;
+  samePixel = 1;
+  
+  for(color = 0; color < 3; color++){   //check if current pixel is same as stored color
+    if ((workInProgress [cursorPosition[0]] [cursorPosition[1]] [color] == presetColor [colorCount] [color]) && samePixel)
+      samePixel = 1;
+    else
+      samePixel = 0;
+  }//end for color
+  
+  if (samePixel){
+    for(color = 0; color < 3; color++){
+      workInProgress [cursorPosition[0]] [cursorPosition[1]] [color] = 0;
+    }//end for color
+  }//end if samePixel
+  else{
+    for(color = 0; color < 3; color++){
+      workInProgress [cursorPosition[0]] [cursorPosition[1]] [color] = presetColor [colorCount] [color];
+    }//end for color
+  }//end else
+}//end draw
