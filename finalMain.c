@@ -33,8 +33,11 @@ int rightFlag = 0;
 int leftFlag = 0;
 int upFlag = 0;
 int downFLag = 0;
-int changeFlag = 0;
+int changeFlag = 0; //checks if there was a change in the joystick position
 int cursorRightLCD = 0;
+int saveFlag = 0; //save button was pressed
+int loadFlag = 0; //Load button pressed
+int LEDFlag = 0; //Turn LED on/off
 
 /*Array*/
 unsigned char workInProgress [8] [8] [3];   //Format: [X] [Y] [G,R,B]
@@ -63,7 +66,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
   }
   else
   {
-    // code for saving the matrix to an array
+    saveFlag = 1;
   }
   
   _IC1IF = 0;
@@ -93,11 +96,11 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   
    if (modeFlag == 0)
   {
-    // code for turning in and off led
+    LEDFlag = 1;
   }
   else
   {
-    // code for uploading pictoral to LED
+    loadFlag = 1;
   }
   
   _IC3IF = 0;
@@ -107,8 +110,10 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
 void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 {
 
-    //change flag?
-  
+ if (changeFlag == 0)
+ {  
+  changeFlag = 1;
+   
   if ( ADC1BUF0 > 1.7)
   {
     //this is up
@@ -142,6 +147,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
     leftFlag = 1;
     
   }
+ }
   
   _AD1IF = 0;
 }
