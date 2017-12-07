@@ -227,6 +227,7 @@ int main()
         }
         // else stay at current position
         rightFlag = 0;
+        changeFlag = 0;
       }
       
       if (leftFlag)
@@ -237,6 +238,7 @@ int main()
         }
         // else stay at current position
         leftFlag = 0;
+        changeFlag = 0;
       }
       
       if (upFlag)
@@ -247,6 +249,7 @@ int main()
         }
         // else stay at current position
         upFlag = 0;
+        changeFlag = 0;
       }
       
      if (downFlag)
@@ -257,6 +260,7 @@ int main()
         }
         // else stay at current position
         downFlag = 0;
+       changeFlag = 0;
       } 
       
       if (LEDFlag)
