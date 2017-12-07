@@ -193,19 +193,49 @@ int main()
     }
     
     //Process flags (update cursor position, update color values, etc.)
-    if (modeFlag == 1)
+    if (modeFlag == 1)  //draw mode
     {
-      setCursor(0,1);
+      setCursor(0,1);   //set the cd display so that is shows when the game is in drawing mode
       lcdPrintStr("Drawing");
     }
     
-    else
+    else  //upload mode
     {
-      setCursor(1,0)
+      setCursor(1,0);
       lcdPrintStr(" 1 2 3 ");
       setCursor(0,1);
       lcdPrintStr("Upload");
       lcdDisplayCursor();
+      
+      if (saveFlag) // saving c=work into an array
+      {
+        if (cursorRightFlag == 0)
+        {
+          // save drawing to array 1
+        }
+        else if (cursorRightFlag == 1)
+        {
+          // save drawing to array 2
+        }
+        else
+          //save drawing to array 3
+      }
+      
+      if (uploadFlag) //uploading saved work to the LED
+      {
+        if (cursorRightFlag == 0)
+        {
+          // place saved drawing form array 1 onto the lcd display
+        }
+        else if (cursorRightFlag == 1)
+        {
+          // place saved drawing form array 2 onto the lcd display
+        }
+        else
+          //place saved drawing form array 3 onto the lcd display
+      }
+      
+      
     }
    
       
@@ -327,10 +357,7 @@ void lcdDisplayCursor(void)
   {
     setCursor(5,0);
   }
-  
-  
-    //variable displayed as sting bust used as code a integer
-    
+ 
  }
 
 void updateArray(void){
