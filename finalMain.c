@@ -201,38 +201,42 @@ int main()
       
       if (rightFlag)
       {
-        //if cursor not all the way to rigth
+        if(_______ < 7) //if cursor not all the way to rigth
+        {
          //move LED cursor one to the right
-         
-        //if all the way to the right
-        // do nothing stay at current position
+        }
+      
+        // else stay at current position
       }
       
-      if (leftFlag)
+      else if (leftFlag)
       {
-        //if cursor not all the way to left
+        if(_____ > 0) //if cursor not all the way to left
+        {
          //move LED cursor one to the left
-         
-        //if all the way to the left
-        // do nothing stay at current position
+        }
+        
+        // else stay at current position
       }
       
-      if (upFlag)
+      else if (upFlag)
       {
-        //if cursor not all the way to up
+        if (_______ > 0)//if cursor not all the way to up
+        {
          //move LED cursor one to the up
-         
-        //if all the way to the up
-        // do nothing stay at current position
+        }
+        
+        // else stay at current position
       }
       
-     if (downFlag)
+     else if (downFlag)
       {
-        //if cursor not all the way to down
+        if(____ < 7)//if cursor not all the way to down
+        {
          //move LED cursor one to the right
-         
-        //if all the way to the down
-        // do nothing stay at current position
+        }
+       
+        // else stay at current position
       } 
       
       
