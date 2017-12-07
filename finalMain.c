@@ -41,6 +41,9 @@ int LEDFlag = 0; //Turn LED on/off
 /*Array*/
 unsigned char presetColor [7] [3];     // presetColors [colorCount] [GRB]
 unsigned char workInProgress [8] [8] [3];   //Format: [X] [Y] [G,R,B]
+unsigned char array1 [8] [8] [3];
+unsigned char array2 [8] [8] [3];
+unsigned char array3 [8] [8] [3];
 
 //color button presses
 int colorCount = 0;
@@ -49,6 +52,7 @@ void setup(void);
 void lcdDisplayCursor(void);
 void updateArray(void);
 void fillPresetColor(void);
+void saveArray(int saveMode, int arrayNum);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
@@ -451,4 +455,73 @@ void fillPresetColor(void){
     presetColor[6] [0] = 0;
     presetColor[6] [1] = 31;
     presetColor[6] [2] = 15;
+}
+
+void saveArray(int saveMode, int arrayNum){
+    int x;
+    int y;
+    int color;
+    
+    if (saveMode == 0) {         //If loading arrayNum into working array
+        if (arrayNum == 1){
+            for(y = 0; y < 8; y++){
+                for(x = 0; x < 8; x++){
+                    for(color = 0; color < 3; color++){
+                        workInProgress [x] [y] [color] = array1 [x] [y] [color];
+                    }//end for color
+                }//end for x
+            }//end for y
+        }//end arrayNum == 1
+    
+        if (arrayNum == 2){
+            for(y = 0; y < 8; y++){
+                for(x = 0; x < 8; x++){
+                    for(color = 0; color < 3; color++){
+                        workInProgress [x] [y] [color] = array2 [x] [y] [color];
+                    }//end for color
+                }//end for x
+            }//end for y
+        }// end arrayNum == 2
+        
+        if (arrayNum == 3){
+            for(y = 0; y < 8; y++){
+                for(x = 0; x < 8; x++){
+                    for(color = 0; color < 3; color++){
+                        workInProgress [x] [y] [color] = array3 [x] [y] [color];
+                    }//end for color
+                }//end for x
+            }//end for y
+        }//end arrayNum = 3
+    }//end if saveMode = 0 (loading array)
+    else{
+        if (arrayNum == 1){
+            for(y = 0; y < 8; y++){
+                for(x = 0; x < 8; x++){
+                    for(color = 0; color < 3; color++){
+                        array1 [x] [y] [color] = workInProgress [x] [y] [color];
+                    }//end for color
+                }//end for x
+            }//end for y
+        }//end arrayNum == 1
+    
+        if (arrayNum == 2){
+            for(y = 0; y < 8; y++){
+                for(x = 0; x < 8; x++){
+                    for(color = 0; color < 3; color++){
+                        array2 [x] [y] [color] = workInProgress [x] [y] [color];
+                    }//end for color
+                }//end for x
+            }//end for y
+        }// end arrayNum == 2
+        
+        if (arrayNum == 3){
+            for(y = 0; y < 8; y++){
+                for(x = 0; x < 8; x++){
+                    for(color = 0; color < 3; color++){
+                        array3 [x] [y] [color] = workInProgress [x] [y] [color];
+                    }//end for color
+                }//end for x
+            }//end for y
+        }//end arrayNum = 3
+    }//end if saveMode == 1 (saving)
 }
