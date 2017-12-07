@@ -175,7 +175,18 @@ int main()
   while(1)
   {  
    
+    _AD1IE = 0;
+    _IC1IE = 0;
+    _IC2IE = 0;
+    _IC3IE = 0;
+    
+    
     updateArray();  //This function is timing sensitive, disable interrupts immediately before
+    
+     _AD1IE = 1;
+    _IC1IE = 1;
+    _IC2IE = 1;
+    _IC3IE = 1;
     
     // changes flags if a button was pressed during updateArray()
     if (_RB9 == 1){    //if save/cycle color was pressed during refresh
