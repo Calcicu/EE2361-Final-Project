@@ -28,7 +28,6 @@
 
 /*Global Flags*/
 int modeFlag = 0; // Mode starts in the drawing mode
-int ledFlag = 0; // LED starts as off
 int rightFlag = 0;
 int leftFlag = 0;
 int upFlag = 0;
