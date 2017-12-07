@@ -40,6 +40,7 @@ int loadFlag = 0; //Load button pressed
 int LEDFlag = 0; //Turn LED on/off
 
 /*Array*/
+unsigned char presetColor [7] [3];     // presetColors [colorCount] [GRB]
 unsigned char workInProgress [8] [8] [3];   //Format: [X] [Y] [G,R,B]
 
 long int red = 000000000000111100000000;    
@@ -56,6 +57,7 @@ int colorCount = 0;
 void setup(void);
 void lcdDisplayCursor(void);
 void updateArray(void);
+void fillPresetColor(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
@@ -63,6 +65,8 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
   if (modeFlag == 0)
   {
     ++colorCount;
+    if (colorCount == 7)
+        colorCount = 0;
   }
   else
   {
@@ -347,4 +351,34 @@ void updateArray(void){
             }//end for color
         }//end for x
     }//end for y
+}
+
+void fillPresetColor(void){
+    presetColor[0] [0] = 0;
+    presetColor[0] [1] = 15;
+    presetColor[0] [2] = 0;
+    
+    presetColor[1] [0] = 7;
+    presetColor[1] [1] = 24;
+    presetColor[1] [2] = 0;
+    
+    presetColor[2] [0] = 15;
+    presetColor[2] [1] = 15;
+    presetColor[2] [2] = 0;
+    
+    presetColor[3] [0] = 15;
+    presetColor[3] [1] = 0;
+    presetColor[3] [2] = 0;
+    
+    presetColor[4] [0] = 0;
+    presetColor[4] [1] = 0;
+    presetColor[4] [2] = 15;
+    
+    presetColor[5] [0] = 0;
+    presetColor[5] [1] = 12;
+    presetColor[5] [2] = 24;
+    
+    presetColor[6] [0] = 0;
+    presetColor[6] [1] = 31;
+    presetColor[6] [2] = 15;
 }
