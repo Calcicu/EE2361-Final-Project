@@ -115,21 +115,21 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
  {  
     changeFlag = 1;
    
-  if ( ADC1BUF0 > 1.7)
+  if ( ADC1BUF0 > 527) //1.7V = 527 steps
   {
     //this is up
     upFlag = 1;
    
   }
   
-  else if (ADC1BUF0 < 1.3)
+  else if (ADC1BUF0 < 403) //1.3V= 403steps
   {
     //this is down
     downFlag = 1;
   
   }
      
-  if ( ADC1BUF1 > 1.7)
+  if ( ADC1BUF1 > 527)
   {
     //this is right
     rightFlag = 1;
@@ -144,7 +144,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 
   }
   
-  else if (ADC1BUF1 < 1.3)
+  else if (ADC1BUF1 < 403)
   {
     //this is up left
     leftFlag = 1;
