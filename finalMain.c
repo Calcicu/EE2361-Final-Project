@@ -39,6 +39,7 @@ int loadFlag = 0; //Load button pressed
 int LEDFlag = 0; //Turn LED on/off
 
 /*Array*/
+unsigned char cursorPosition [2];   //cursorPosition[0] = x, cursorPosition [1] = y
 unsigned char presetColor [7] [3];     // presetColors [colorCount] [GRB]
 unsigned char workInProgress [8] [8] [3];   //Format: [X] [Y] [G,R,B]
 unsigned char array1 [8] [8] [3];
@@ -166,6 +167,9 @@ int main()
 {
   setup();
   fillPresetColor();
+  cursorPosition [0] = 0;
+  cursorPosition [1] = 1;
+  
   
   while(1)
   {  
@@ -205,42 +209,42 @@ int main()
       
       if (rightFlag)
       {
-        if(_______ < 7) //if cursor not all the way to rigth
+        if(cursorPosition [0] < 7) //if cursor not all the way to rigth
         {
-         //move LED cursor one to the right
+            cursorPosition [0] = cursorPosition [0] + 1;
         }
-      
         // else stay at current position
+        rightFlag = 0;
       }
       
-      else if (leftFlag)
+      if (leftFlag)
       {
-        if(_____ > 0) //if cursor not all the way to left
+        if(cursorPosition [0] > 0) //if cursor not all the way to left
         {
-         //move LED cursor one to the left
+         cursorPosition [0] = cursorPosition [0] - 1;
         }
-        
         // else stay at current position
+        leftFlag = 0;
       }
       
-      else if (upFlag)
+      if (upFlag)
       {
-        if (_______ > 0)//if cursor not all the way to up
+        if (cursorPosition [1] > 0)//if cursor not all the way to up
         {
-         //move LED cursor one to the up
+         cursorPosition [1] = cursorPosition [1] - 1;
         }
-        
         // else stay at current position
+        upFlag = 0;
       }
       
-     else if (downFlag)
+     if (downFlag)
       {
-        if(____ < 7)//if cursor not all the way to down
+        if(cursorPosition [1] < 7)//if cursor not all the way to down
         {
-         //move LED cursor one to the right
+         cursorPosition [1] = cursorPosition [1] + 1;
         }
-       
         // else stay at current position
+        downFlag = 0;
       } 
       
       if (LEDFlag)
