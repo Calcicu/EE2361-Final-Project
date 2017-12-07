@@ -123,7 +123,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
   
   else if (ADC1BUF0 < 1.3)
   {
-    //this is up down
+    //this is down
     downFlag = 1;
   
   }
