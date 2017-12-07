@@ -249,6 +249,7 @@ int main()
       
       if (LEDFlag)
       {
+        LEDFlag = 0;
         //turn on led
       }
       else if (!LEDFlag)
@@ -270,6 +271,7 @@ int main()
       
       if (saveFlag) // saving c=work into an array
       {
+        saveFlag = 0;
         if (cursorRightFlag == 0)
         {
           // save drawing to array 1
@@ -287,6 +289,7 @@ int main()
       
       if (loadFlag) //uploading saved work to the LED
       {
+        loadFlag = 0;
         if (cursorRightFlag == 0)
         {
           // place saved drawing form array 1 onto the lcd display
