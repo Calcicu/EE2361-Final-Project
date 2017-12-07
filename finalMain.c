@@ -183,8 +183,21 @@ int main()
     }
     
     //Process flags (update cursor position, update color values, etc.)
-  
-    lcdDisplayCursor;
+    if (modeFlag == 1)
+    {
+      setCursor(0,1);
+      lcdPrintStr("Drawing");
+    }
+    
+    else
+    {
+      setCursor(1,0)
+      lcdPrintStr(" 1 2 3 ");
+      setCursor(0,1);
+      lcdPrintStr("Upload");
+      lcdDisplayCursor();
+    }
+   
       
     //every 2ms:
     // 1. disable interrupts 
@@ -291,8 +304,6 @@ void setup(void)
 void lcdDisplayCursor(void)
 {
   //enable cursor
-  setCursor(1,0)
-  lcdPrintScreen(" 1 2 3 ");
   
   if (cursorRightLCD == 0)
   {
