@@ -174,25 +174,35 @@ int main()
       
     /*   //Refresh display (Estimated ~2ms)
     
+    
+    // changes flags if a button was pressed during the refresh mode
     if (_RB9 = 1){    //if save/cycle color was pressed during refresh
       if (!modeFlag)
         //set save flag
+        saveFlag = 1;
       else
         //set cycle color flag
+        
     }//end if _RB9 = 1
     
     if (_RB7 = 1){    //if load/draw was pressed during refresh
       if (!modeFlag)
+      {
         //set load flag
+        load flag = 1;
+      }
       else
         //set draw flag
-    }//end if _RB7 = 1
+        LEDFlag = 1;
+        }//end if _RB7 = 1
     
     if (_RB8 = 1){    //if toggle mode was pressed during refresh
       //set toggleModeFlag
     }
     
+    
     //Process flags (update cursor position, update color values, etc.)
+    
     if (modeFlag == 1)  //draw mode
     {
       setCursor(0,1);   //set the cd display so that is shows when the game is in drawing mode
@@ -221,7 +231,7 @@ int main()
           //save drawing to array 3
       }
       
-      if (uploadFlag) //uploading saved work to the LED
+      if (loadFlag) //uploading saved work to the LED
       {
         if (cursorRightFlag == 0)
         {
