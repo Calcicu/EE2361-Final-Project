@@ -31,7 +31,7 @@ int modeFlag = 0; // Mode starts in the drawing mode
 int rightFlag = 0;
 int leftFlag = 0;
 int upFlag = 0;
-int downFLag = 0;
+int downFlag = 0;
 int changeFlag = 0; //checks if there was a change in the joystick position
 int cursorRightFlag = 0;
 int saveFlag = 0; //save button was pressed
@@ -123,8 +123,8 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
   
   else if (ADC1BUF0 < 1.3)
   {
-    //this is up down
-    downFLag = 1;
+    //this is down
+    downFlag = 1;
   
   }
      
