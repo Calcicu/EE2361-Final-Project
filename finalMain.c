@@ -26,6 +26,7 @@
                                         // Fail-Safe Clock Monitor is enabled)
 #pragma config FNOSC = FRCPLL       // Oscillator Select (Fast RC Oscillator with PLL module (FRCPLL))
 
+/*Global Flags*/
 int modeFlag = 0; // Mode starts in the drawing mode
 int ledFlag = 0; // LED starts as off
 int rightFlag = 0;
@@ -35,7 +36,10 @@ int downFLag = 0;
 int changeFlag = 0;
 int cursorRightLCD = 0;
 
-long int red = 000000000000111100000000;
+/*Array*/
+unsigned char workInProgress [8] [8] [3];   //Format: [X] [Y] [G,R,B]
+
+long int red = 000000000000111100000000;    
 long int orange =  000001110001100000000000;
 long int yellow = 000011110000111100000000;
 long int green = 000011110000000000000000;
@@ -48,6 +52,7 @@ int colorCount = 0;
 
 void setup(void);
 void lcdDisplayCursor(void);
+void updateArray(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
@@ -307,3 +312,22 @@ void lcdDisplayCursor(void)
     
  }
 
+void updateArray(void){
+    int mask;
+    int x;
+    int y;
+    int color;
+    
+    for(y = 0; y < 8; y++){
+        for(x = 0; x < 8; x++){
+            for(color = 0; color < 3; color++){
+                for(mask = 0x80; mask > 0; mask >>=1){
+                    if (mask & (workInProgress [x] [y] [color]))
+                        write_1();
+                    else
+                        write_0();
+                }//end for mask
+            }//end for color
+        }//end for x
+    }//end for y
+}
