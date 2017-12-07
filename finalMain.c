@@ -269,13 +269,16 @@ int main()
         if (cursorRightFlag == 0)
         {
           // save drawing to array 1
+          saveArray(1,1)
         }
         else if (cursorRightFlag == 1)
         {
           // save drawing to array 2
+          saveArray(1,2)
         }
         else
           //save drawing to array 3
+          saveArray(1,3)
       }
       
       if (loadFlag) //uploading saved work to the LED
@@ -283,13 +286,16 @@ int main()
         if (cursorRightFlag == 0)
         {
           // place saved drawing form array 1 onto the lcd display
+          saveArray(0,1)
         }
         else if (cursorRightFlag == 1)
         {
           // place saved drawing form array 2 onto the lcd display
+          saveArray(0,2)
         }
         else
           //place saved drawing form array 3 onto the lcd display
+          saveArray(0,3)
       }
       
       
