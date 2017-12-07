@@ -43,14 +43,6 @@ int LEDFlag = 0; //Turn LED on/off
 unsigned char presetColor [7] [3];     // presetColors [colorCount] [GRB]
 unsigned char workInProgress [8] [8] [3];   //Format: [X] [Y] [G,R,B]
 
-long int red = 000000000000111100000000;    
-long int orange =  000001110001100000000000;
-long int yellow = 000011110000111100000000;
-long int green = 000011110000000000000000;
-long int blue = 000000000000000000001111;
-long int purple = 000000000000110000011000;
-long int pink = 000001110001111100001111;
-
 //color button presses
 int colorCount = 0;
 
@@ -168,11 +160,13 @@ void __attribute__((__interrupt__,__auto_psv__)) _T3Interrupt(void)
 int main()
 {
   setup();
+  fillPresetColor();
   
   while(1)
   {  
       
-    /*   //Refresh display (Estimated ~2ms)
+    updateArray();
+    /*
     
     if (_RB9 = 1){    //if save/cycle color was pressed during refresh
       if (!modeFlag)
