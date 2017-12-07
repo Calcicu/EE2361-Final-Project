@@ -205,6 +205,7 @@ int main()
       
       if (rightFlag)
       {
+        rightFlag = 0;
         if(_______ < 7) //if cursor not all the way to rigth
         {
          //move LED cursor one to the right
@@ -215,6 +216,7 @@ int main()
       
       else if (leftFlag)
       {
+        leftFlag = 0;
         if(_____ > 0) //if cursor not all the way to left
         {
          //move LED cursor one to the left
@@ -225,6 +227,7 @@ int main()
       
       else if (upFlag)
       {
+        upFlag = 0;
         if (_______ > 0)//if cursor not all the way to up
         {
          //move LED cursor one to the up
@@ -235,6 +238,7 @@ int main()
       
      else if (downFlag)
       {
+        downFlag  = 0;
         if(____ < 7)//if cursor not all the way to down
         {
          //move LED cursor one to the right
@@ -245,6 +249,7 @@ int main()
       
       if (LEDFlag)
       {
+        LEDFlag = 0;
         //turn on led
       }
       else if (!LEDFlag)
@@ -266,6 +271,7 @@ int main()
       
       if (saveFlag) // saving c=work into an array
       {
+        saveFlag = 0;
         if (cursorRightFlag == 0)
         {
           // save drawing to array 1
@@ -283,6 +289,7 @@ int main()
       
       if (loadFlag) //uploading saved work to the LED
       {
+        loadFlag = 0;
         if (cursorRightFlag == 0)
         {
           // place saved drawing form array 1 onto the lcd display
