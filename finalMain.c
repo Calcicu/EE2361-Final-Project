@@ -33,22 +33,12 @@ int rightFlag = 0;
 int leftFlag = 0;
 int upFlag = 0;
 int downFLag = 0;
-int changeFlag = 0; //checks if there was a change in the joystick position
+int changeFlag = 0;
 int cursorRightLCD = 0;
-int saveFlag = 0; //save button was pressed
-int loadFlag = 0; //Load button pressed
-int LEDFlag = 0; //Turn LED on/off
 
 /*Array*/
+unsigned char presetColor [7] [3];     // presetColors [colorCount] [GRB]
 unsigned char workInProgress [8] [8] [3];   //Format: [X] [Y] [G,R,B]
-
-long int red = 000000000000111100000000;    
-long int orange =  000001110001100000000000;
-long int yellow = 000011110000111100000000;
-long int green = 000011110000000000000000;
-long int blue = 000000000000000000001111;
-long int purple = 000000000000110000011000;
-long int pink = 000001110001111100001111;
 
 //color button presses
 int colorCount = 0;
@@ -56,6 +46,7 @@ int colorCount = 0;
 void setup(void);
 void lcdDisplayCursor(void);
 void updateArray(void);
+void fillPresetColor(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
@@ -66,7 +57,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
   }
   else
   {
-    saveFlag = 1;
+    // code for saving the matrix to an array
   }
   
   _IC1IF = 0;
@@ -96,11 +87,11 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   
    if (modeFlag == 0)
   {
-    LEDFlag = 1;
+    // code for turning in and off led
   }
   else
   {
-    loadFlag = 1;
+    // code for uploading pictoral to LED
   }
   
   _IC3IF = 0;
@@ -110,10 +101,8 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
 void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 {
 
- if (changeFlag == 0)
- {  
-  changeFlag = 1;
-   
+    //change flag?
+  
   if ( ADC1BUF0 > 1.7)
   {
     //this is up
@@ -133,9 +122,10 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
     //this is right
     rightFlag = 1;
       
-    if (modeFlag = 1)
+    if (modeFlag == 1)
     {
-      cursorRightLCD = cursorRightLCD++ & 0b111;  // counts from 0 to 2 then wraps back around
+        cursorRightLCD++;
+        cursorRightLCD &= 0b111;  // counts from 0 to 2 then wraps back around
     }
     
 
@@ -147,7 +137,6 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
     leftFlag = 1;
     
   }
- }
   
   _AD1IF = 0;
 }
@@ -347,4 +336,34 @@ void updateArray(void){
             }//end for color
         }//end for x
     }//end for y
+}
+
+void fillPresetColor(void){
+    presetColor[0] [0] = 0;
+    presetColor[0] [1] = 15;
+    presetColor[0] [2] = 0;
+    
+    presetColor[1] [0] = 7;
+    presetColor[1] [1] = 24;
+    presetColor[1] [2] = 0;
+    
+    presetColor[2] [0] = 15;
+    presetColor[2] [1] = 15;
+    presetColor[2] [2] = 0;
+    
+    presetColor[3] [0] = 15;
+    presetColor[3] [1] = 0;
+    presetColor[3] [2] = 0;
+    
+    presetColor[4] [0] = 0;
+    presetColor[4] [1] = 0;
+    presetColor[4] [2] = 15;
+    
+    presetColor[5] [0] = 0;
+    presetColor[5] [1] = 12;
+    presetColor[5] [2] = 24;
+    
+    presetColor[6] [0] = 0;
+    presetColor[6] [1] = 31;
+    presetColor[6] [2] = 15;
 }
