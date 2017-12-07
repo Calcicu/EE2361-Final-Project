@@ -239,6 +239,16 @@ int main()
         // else stay at current position
       } 
       
+      if (LEDFlag)
+      {
+        //turn on led
+      }
+      else if (!LEDFlag)
+      {
+        //turn off LED)
+      }
+        
+      
       
     }
     
