@@ -131,7 +131,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
       
     if (modeFlag = 1)
     {
-      cursorRightLCD = cursorRightLCD++ & 0b111;  // counts from 0 to 2 then wraps back around
+      cursorRightFlag = cursorRightFlag++ & 0b111;  // counts from 0 to 2 then wraps back around
     }
     
 
