@@ -9,6 +9,7 @@
 #include <p24Fxxxx.h>
 #include "lcdLib.h"
 #include <stdio.h>
+#include "thom6223_lab4b_asmLib.h"
 
 // CW1: FLASH CONFIGURATION WORD 1 (see PI24 Family Reference Manual 24.1)
 #pragma config ICS = PGx1           // Comm Channel Select (Emulator EMUC1/EMUD1 pins areshared with PGC1/PGD1)
@@ -54,7 +55,6 @@ void lcdDisplayCursor(void);
 void updateArray(void);
 void fillPresetColor(void);
 void saveArray(int saveMode, int arrayNum);
-void draw(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
@@ -113,7 +113,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 
  if (changeFlag == 0)
  {  
-  changeFlag = 1;
+    changeFlag = 1;
    
   if ( ADC1BUF0 > 1.7)
   {
@@ -167,6 +167,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _T3Interrupt(void)
 int main()
 {
   setup();
+  lcd_init();
   fillPresetColor();
   cursorPosition [0] = 0;
   cursorPosition [1] = 1;
@@ -179,17 +180,16 @@ int main()
     _IC1IE = 0;
     _IC2IE = 0;
     _IC3IE = 0;
+      
+  //  updateArray();  //This function is timing sensitive, disable interrupts immediately before
     
-    
-    updateArray();  //This function is timing sensitive, disable interrupts immediately before
-    
-     _AD1IE = 1;
+    _AD1IE = 1;
     _IC1IE = 1;
     _IC2IE = 1;
     _IC3IE = 1;
     
     // changes flags if a button was pressed during updateArray()
-    if (_RB9 == 1){    //if save/cycle color was pressed during refresh
+    if (_RB9 == 0){    //if save/cycle color was pressed during refresh
       if (!modeFlag)
         //set save flag
         saveFlag = 1;
@@ -198,7 +198,7 @@ int main()
         
     }//end if _RB9 = 1
     
-    if (_RB7 == 1){    //if load/draw was pressed during refresh
+    if (_RB7 == 0){    //if load/draw was pressed during refresh
       if (!modeFlag)
       {
         loadFlag = 1;
@@ -207,8 +207,8 @@ int main()
         LEDFlag = 1;
     }//end if _RB7 = 1
     
-    if (_RB8 == 1){    //if toggle mode was pressed during refresh
-      modeFlag = !modeFlag;
+    if (_RB8 == 0){    //if toggle mode was pressed during refresh
+     // modeFlag = !modeFlag;
     }
     
     
@@ -259,13 +259,14 @@ int main()
         downFlag = 0;
       } 
       
-      if (LEDFlag){
-        
-            }//end for color
-        }//end if (current color matches drawing color)
-        
+      if (LEDFlag)
+      {
         LEDFlag = 0;
         //turn on led
+      }
+      else if (!LEDFlag)
+      {
+        //turn off LED)
       }
         
       
@@ -385,7 +386,7 @@ void setup(void)
     PR3 = 15999; //show values every 100ms
     T3CONbits.TCKPS = 0; // prescaer set 1:1
     
-    _T3IE = 1;
+    //_T3IE = 1;
     _T3IP = 3; // set to low priority , we can change that if we need to
     
     _VCFG = 0;
@@ -415,10 +416,10 @@ void setup(void)
     __builtin_write_OSCCONL (OSCCON | 0x40);
  
   
-  IFS0bits.IC2IF = 0;
-  IC3CON = 0x0002;  //capture and interrupt every falling edge
+  _IC2IF = 0;
+  IC2CON = 0x0002;  //capture and interrupt every falling edge
   
-  IEC0bits.IC2IE = 1; //enable interrupt
+ _IC2IE = 1; //enable interrupt
  
 }
 
@@ -428,15 +429,15 @@ void lcdDisplayCursor(void)
   
   if (cursorRightFlag == 0)
   {
-   setCursor(1,0);
+   setCursor(2,0);
   }
   else if (cursorRightFlag == 1)
   {
-    setCursor(3,0);
+    setCursor(4,0);
   }
   else 
   {
-    setCursor(5,0);
+    setCursor(6,0);
   }
  
  }
@@ -559,27 +560,3 @@ void saveArray(int saveMode, int arrayNum){
         }//end arrayNum = 3
     }//end if saveMode == 1 (saving)
 }
-
-void draw(void){
-  int color;
-  int samePixel;
-  samePixel = 1;
-  
-  for(color = 0; color < 3; color++){   //check if current pixel is same as stored color
-    if ((workInProgress [cursorPosition[0]] [cursorPosition[1]] [color] == presetColor [colorCount] [color]) && samePixel)
-      samePixel = 1;
-    else
-      samePixel = 0;
-  }//end for color
-  
-  if (samePixel){
-    for(color = 0; color < 3; color++){
-      workInProgress [cursorPosition[0]] [cursorPosition[1]] [color] = 0;
-    }//end for color
-  }//end if samePixel
-  else{
-    for(color = 0; color < 3; color++){
-      workInProgress [cursorPosition[0]] [cursorPosition[1]] [color] = presetColor [colorCount] [color];
-    }//end for color
-  }//end else
-}//end draw
