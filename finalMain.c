@@ -252,11 +252,6 @@ int main()
         LEDFlag = 0;
         //turn on led
       }
-      else if (!LEDFlag)
-      {
-        //turn off LED)
-      }
-        
       
       
     }
