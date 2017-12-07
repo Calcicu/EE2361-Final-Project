@@ -133,7 +133,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
     //this is right
     rightFlag = 1;
       
-    if (modeFlag = 1)
+    if (modeFlag == 1)
     {
       cursorRightFlag++;
       if (cursorRightFlag == 3)
@@ -177,7 +177,7 @@ int main()
     updateArray();  //This function is timing sensitive, disable interrupts immediately before
     
     // changes flags if a button was pressed during updateArray()
-    if (_RB9 = 1){    //if save/cycle color was pressed during refresh
+    if (_RB9 == 1){    //if save/cycle color was pressed during refresh
       if (!modeFlag)
         //set save flag
         saveFlag = 1;
@@ -186,7 +186,7 @@ int main()
         
     }//end if _RB9 = 1
     
-    if (_RB7 = 1){    //if load/draw was pressed during refresh
+    if (_RB7 == 1){    //if load/draw was pressed during refresh
       if (!modeFlag)
       {
         loadFlag = 1;
@@ -195,7 +195,7 @@ int main()
         LEDFlag = 1;
     }//end if _RB7 = 1
     
-    if (_RB8 = 1){    //if toggle mode was pressed during refresh
+    if (_RB8 == 1){    //if toggle mode was pressed during refresh
       modeFlag = !modeFlag;
     }
     
