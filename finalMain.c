@@ -197,6 +197,44 @@ int main()
     {
       setCursor(0,1);   //set the cd display so that is shows when the game is in drawing mode
       lcdPrintStr("Drawing");
+      
+      if (rightFlag)
+      {
+        //if cursor not all the way to rigth
+         //move LED cursor one to the right
+         
+        //if all the way to the right
+        // do nothing stay at current position
+      }
+      
+      if (leftFlag)
+      {
+        //if cursor not all the way to left
+         //move LED cursor one to the left
+         
+        //if all the way to the left
+        // do nothing stay at current position
+      }
+      
+      if (upFlag)
+      {
+        //if cursor not all the way to up
+         //move LED cursor one to the up
+         
+        //if all the way to the up
+        // do nothing stay at current position
+      }
+      
+     if (downFlag)
+      {
+        //if cursor not all the way to down
+         //move LED cursor one to the right
+         
+        //if all the way to the down
+        // do nothing stay at current position
+      } 
+      
+      
     }
     
     else  //upload mode
