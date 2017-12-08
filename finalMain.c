@@ -34,7 +34,7 @@ int leftFlag = 0;
 int upFlag = 0;
 int downFlag = 0;
 int changeFlag = 0; //checks if there was a change in the joystick position
-int cursorRightFlag = 0;
+int cursorRightFlag = 0;        //Tracks cursor position on LCD
 int saveFlag = 0; //save button was pressed
 int loadFlag = 0; //Load button pressed
 int LEDFlag = 0; //Turn LED on/off
@@ -113,41 +113,32 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 
  if (changeFlag == 0)
  {  
-    changeFlag = 1;
    
-  if ( ADC1BUF0 > 2)
+  if ( ADC1BUF0*(3.3/1024) > 2)
   {
     //this is up
     upFlag = 1;
+    changeFlag = 1;
    
   }
   
-  else if (ADC1BUF0 < 1)
+  else if (ADC1BUF0*(3.3/1024) < 1)
   {
     //this is down
     downFlag = 1;
+    changeFlag = 1;
   
   }
      
-  if ( ADC1BUF1 > 2)
-  {
-    //this is right
-    rightFlag = 1;
-      
-    if (modeFlag == 1)
-    {
-      cursorRightFlag++;
-      if (cursorRightFlag == 3)
-          cursorRightFlag = 0;
-    }
-    
-
+  if ( ADC1BUF1*(3.3/1024) > 2){
+    leftFlag = 1;
+    changeFlag = 1;
   }
   
-  else if (ADC1BUF1 < 1)
+  else if (ADC1BUF1*(3.3/1024) < 1)
   {
-    //this is up left
-    leftFlag = 1;
+    rightFlag = 1;
+    changeFlag = 1;
     
   }
  }
@@ -218,6 +209,7 @@ int main()
     {
       setCursor(0,1);   //set the cd display so that is shows when the game is in drawing mode
       lcdPrintStr("Drawing");
+      lcdDisplayCursor();
       
       if (rightFlag)
       {
@@ -277,52 +269,68 @@ int main()
       
     }
     
-    else  //upload mode
-    {
-      setCursor(1,0);
-      lcdPrintStr(" 1 2 3 ");
-      setCursor(0,1);
-      lcdPrintStr("Upload");
-      lcdDisplayCursor();
+    else{  //upload mode
+        setCursor(1,0);
+        lcdPrintStr(" 1 2 3 ");
+        setCursor(0,1);
+        lcdPrintStr("Upload");
+        lcdDisplayCursor();
+
+        if (saveFlag) // saving c=work into an array
+        {
+            saveFlag = 0;
+            if (cursorRightFlag == 0){
+                saveArray(1,1);         // save drawing to array 1
+            }
+            else if (cursorRightFlag == 1){
+                saveArray(1,2);         // save drawing to array 2
+            }
+            else                        
+                saveArray(1,3);         //save drawing to array 3
+        }
       
-      if (saveFlag) // saving c=work into an array
-      {
-        saveFlag = 0;
-        if (cursorRightFlag == 0)
-        {
-          // save drawing to array 1
-          saveArray(1,1);
+        if (loadFlag){ //uploading saved work to the LED
+            loadFlag = 0;
+            if (cursorRightFlag == 0){
+                saveArray(0,1);           // place saved drawing from array 1 onto the lcd display
+            }
+            else if (cursorRightFlag == 1){
+                saveArray(0,2);           // place saved drawing from array 2 onto the lcd display
+            }
+            else
+                saveArray(0,3);           // place saved drawing from array 3 onto the lcd display
         }
-        else if (cursorRightFlag == 1)
-        {
-          // save drawing to array 2
-          saveArray(1,2);
-        }
-        else
-          //save drawing to array 3
-          saveArray(1,3);
-      }
-      
-      if (loadFlag) //uploading saved work to the LED
-      {
-        loadFlag = 0;
-        if (cursorRightFlag == 0)
-        {
-          // place saved drawing form array 1 onto the lcd display
-          saveArray(0,1);
-        }
-        else if (cursorRightFlag == 1)
-        {
-          // place saved drawing form array 2 onto the lcd display
-          saveArray(0,2);
-        }
-        else
-          //place saved drawing form array 3 onto the lcd display
-          saveArray(0,3);
-      }
       
       
-    }
+        if (rightFlag){
+            cursorRightFlag++;
+            if(cursorRightFlag > 2)
+                cursorRightFlag = 0;
+            
+            rightFlag = 0;
+            changeFlag = 0;
+        }
+      
+        if (leftFlag){
+            cursorRightFlag--;
+            if(cursorRightFlag < 0)
+                cursorRightFlag = 2;
+            
+            leftFlag = 0;
+            changeFlag = 0;
+        }
+      
+        if (upFlag){        //Up and down are not used in upload mode
+            upFlag = 0;
+            changeFlag = 0;
+        }
+      
+        if (downFlag){
+            downFlag = 0;
+            changeFlag = 0;
+        }
+       
+    }//end upload mode
    
       
     //every 2ms:
@@ -337,45 +345,45 @@ int main()
 
 void setup(void)
 {
-  CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
-  AD1PCFG = 0xfffd;   //AN0 and AN1 are analog
-  TRISA = 0b1111111111111011; //TRISA still needs to be set
-  TRISB = 0b0000001110000011; // TRISA still needs to be set
+    CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
+    AD1PCFG = 0xfffc;   //AN0 and AN1 are analog
+    TRISA = 0b1111111111111011; //TRISA still needs to be set
+    TRISB = 0b0000001110000011; // TRISA still needs to be set
   
     // pullup resistors
     _CN21PUE = 1; //enable pullup resostor for RB9
     _CN22PUE = 1; //enable pullup resister for RB8
     _CN23PUE = 1; //enable pullup resister for RB7
   
-  //initialize input capture for 1st push button
+    //initialize input capture for 1st push button
   
-  INTCON1bits.NSTDIS = 1; //disables interrupt nesting
-  IPC0bits.IC1IP = 4;   // interrupt priority
+    INTCON1bits.NSTDIS = 1; //disables interrupt nesting
+    IPC0bits.IC1IP = 4;   // interrupt priority
  
-  __builtin_write_OSCCONL (OSCCON & 0xbf);
-  RPINR7bits.IC1R = 9;
-  __builtin_write_OSCCONL (OSCCON | 0x40);
+    __builtin_write_OSCCONL (OSCCON & 0xbf);
+    RPINR7bits.IC1R = 9;
+    __builtin_write_OSCCONL (OSCCON | 0x40);
   
-  IFS0bits.IC1IF = 0;
-  IC1CON = 0x0002;  //capture and interrupt every falling edge
+    IFS0bits.IC1IF = 0;
+    IC1CON = 0x0002;  //capture and interrupt every falling edge
   
-  IEC0bits.IC1IE = 1; //enable interrupt
+    IEC0bits.IC1IE = 1; //enable interrupt
   
-  //initialize input capture for 2nd push button
+    //initialize input capture for 2nd push button
   
-  INTCON1bits.NSTDIS = 1; //disables interrupt nesting
-  _IC3IP = 4;   // interrupt priority
+    INTCON1bits.NSTDIS = 1; //disables interrupt nesting
+    _IC3IP = 4;   // interrupt priority
  
-  __builtin_write_OSCCONL (OSCCON & 0xbf);
-  RPINR8bits.IC3R = 7;
-  __builtin_write_OSCCONL (OSCCON | 0x40);
+    __builtin_write_OSCCONL (OSCCON & 0xbf);
+    RPINR8bits.IC3R = 7;
+    __builtin_write_OSCCONL (OSCCON | 0x40);
   
- _IC3IF = 0;
-  IC3CON = 0x0003;  //capture and interrupt every rising edge
+    _IC3IF = 0;
+    IC3CON = 0x0003;  //capture and interrupt every rising edge
   
-  _IC3IE = 1; //enable interrupt  
+    _IC3IE = 1; //enable interrupt  
  
-  //initialize i2c for LCD and
+    //initialize i2c for LCD and
   
     I2C2CON = 0;
     I2C2CONbits.DISSLW = 1;
@@ -383,7 +391,7 @@ void setup(void)
     _MI2C2IF = 0;
     I2C2CONbits.I2CEN = 1; //enable I2C
   
-  /*initialize timer 3
+    /*initialize timer 3
  
     TMR3 = 0;
     T3CON = 0;
@@ -393,30 +401,32 @@ void setup(void)
     //_T3IE = 1;
     //_T3IP = 3; // set to low priority , we can change that if we need to*/
     
+    AD1CON1 = 0x0000;
+    AD1CON2 = 0x0000;
+    AD1CON3 = 0x0000;
+    AD1CSSL = 0x0003;   //Scan AN0, AN1 for positive input
+    AD1CHS = 0x0000;    //VR- for negative input
+    _CSCNA = 1;     // enable scanning
+    _VCFG = 0;      //VR+, VR- from AVdd, AVss
+    _ADCS = 0;      // sat auto-sampling time  = 1*Tcy 
+    _ASAM = 1;      // set auto-sampling
+    _SSRC = 0b111;  // Auto-convert
+    _SAMC = 0b11111;  // Auto-Sample Time bits = 8*TAD
+    _SMPI = 0b0001; // Interrupts at the completion of conversion for every 2nd sample/convert sequence
     
-   AD1CSSLbits.CSSL0 = 1;
-     AD1CSSLbits.CSSL1 = 1;
-    _CSCNA = 1; // enable scanning
-    _VCFG = 0;
-    _ADCS = 0; // sat auto-sampling time  = 1*Tcy 
-    _ASAM = 1; // set auto-sampling
-    _SSRC = 0b111; // Timer3 compare ends sampling and starts conversionconversion
-    _SAMC = 0b010; // Auto-Sample Time bits = 10 *TAD
-    _SMPI = 0b001; // Interrupts at the completion of conversion for every 2nd sample/convert sequence
     
-    
-   // initialize interrupt for A/D:
+    // initialize interrupt for A/D:
     _AD1IF = 0; // set interrupt flag to 0
     _AD1IP = 1;   //set interrupt priority to high
     _AD1IE = 1; //enable interrupt
     
     AD1CON1bits.ADON = 1; 
-   // T3CONbits.TON = 1;
+    // T3CONbits.TON = 1;
     
     //initialize input capture for the joystick
   
-  INTCON1bits.NSTDIS = 1; //disables interrupt nesting
-  _IC2IP = 4;   // interrupt priority
+    INTCON1bits.NSTDIS = 1; //disables interrupt nesting
+    _IC2IP = 4;   // interrupt priority
  
   
     __builtin_write_OSCCONL (OSCCON & 0xbf);
@@ -424,14 +434,14 @@ void setup(void)
     __builtin_write_OSCCONL (OSCCON | 0x40);
  
   
-  _IC2IF = 0;
-  IC2CON = 0x0002;  //capture and interrupt every falling edge
+    _IC2IF = 0;
+    IC2CON = 0x0002;  //capture and interrupt every falling edge
   
- _IC2IE = 1; //enable interrupt
+    _IC2IE = 1; //enable interrupt
  
 }
 
-void lcdDisplayCursor(void)
+void lcdDisplayCursor(void)         //
 {
   //enable cursor
   
@@ -471,31 +481,31 @@ void updateArray(void){
 }
 
 void fillPresetColor(void){
-    presetColor[0] [0] = 0;
+    presetColor[0] [0] = 0;     //Red
     presetColor[0] [1] = 15;
     presetColor[0] [2] = 0;
     
-    presetColor[1] [0] = 7;
+    presetColor[1] [0] = 7;     //Orange
     presetColor[1] [1] = 24;
     presetColor[1] [2] = 0;
     
-    presetColor[2] [0] = 15;
+    presetColor[2] [0] = 15;    //Yellow
     presetColor[2] [1] = 15;
     presetColor[2] [2] = 0;
     
-    presetColor[3] [0] = 15;
+    presetColor[3] [0] = 15;    //Green
     presetColor[3] [1] = 0;
     presetColor[3] [2] = 0;
     
-    presetColor[4] [0] = 0;
+    presetColor[4] [0] = 0;     //Blue
     presetColor[4] [1] = 0;
     presetColor[4] [2] = 15;
     
-    presetColor[5] [0] = 0;
+    presetColor[5] [0] = 0;     //Pink
     presetColor[5] [1] = 12;
     presetColor[5] [2] = 24;
     
-    presetColor[6] [0] = 0;
+    presetColor[6] [0] = 0;     //Purple
     presetColor[6] [1] = 31;
     presetColor[6] [2] = 15;
 }
