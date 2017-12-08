@@ -115,21 +115,21 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
  {  
     changeFlag = 1;
    
-  if ( ADC1BUF0 > 527) //1.7V = 527 steps
+  if ( ADC1BUF0 > 2)
   {
     //this is up
     upFlag = 1;
    
   }
   
-  else if (ADC1BUF0 < 403) //1.3V= 403steps
+  else if (ADC1BUF0 < 1)
   {
     //this is down
     downFlag = 1;
   
   }
      
-  if ( ADC1BUF1 > 527)
+  if ( ADC1BUF1 > 2)
   {
     //this is right
     rightFlag = 1;
@@ -144,7 +144,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _ADC1Interrupt(void)
 
   }
   
-  else if (ADC1BUF1 < 403)
+  else if (ADC1BUF1 < 1)
   {
     //this is up left
     leftFlag = 1;
@@ -370,7 +370,7 @@ void setup(void)
   RPINR8bits.IC3R = 7;
   __builtin_write_OSCCONL (OSCCON | 0x40);
   
-  _IC3IF = 0;
+ _IC3IF = 0;
   IC3CON = 0x0003;  //capture and interrupt every rising edge
   
   _IC3IE = 1; //enable interrupt  
@@ -383,7 +383,7 @@ void setup(void)
     _MI2C2IF = 0;
     I2C2CONbits.I2CEN = 1; //enable I2C
   
-  // initialize timer 3
+  /*initialize timer 3
  
     TMR3 = 0;
     T3CON = 0;
@@ -391,12 +391,16 @@ void setup(void)
     T3CONbits.TCKPS = 0; // prescaer set 1:1
     
     //_T3IE = 1;
-    _T3IP = 3; // set to low priority , we can change that if we need to
+    //_T3IP = 3; // set to low priority , we can change that if we need to*/
     
+    
+   AD1CSSLbits.CSSL0 = 1;
+     AD1CSSLbits.CSSL1 = 1;
+    _CSCNA = 1; // enable scanning
     _VCFG = 0;
     _ADCS = 0; // sat auto-sampling time  = 1*Tcy 
     _ASAM = 1; // set auto-sampling
-    _SSRC = 0b010; // Timer3 compare ends sampling and starts conversionconversion
+    _SSRC = 0b111; // Timer3 compare ends sampling and starts conversionconversion
     _SAMC = 0b010; // Auto-Sample Time bits = 10 *TAD
     _SMPI = 0b001; // Interrupts at the completion of conversion for every 2nd sample/convert sequence
     
@@ -407,7 +411,7 @@ void setup(void)
     _AD1IE = 1; //enable interrupt
     
     AD1CON1bits.ADON = 1; 
-    T3CONbits.TON = 1;
+   // T3CONbits.TON = 1;
     
     //initialize input capture for the joystick
   
