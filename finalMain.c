@@ -59,22 +59,32 @@ void fillPresetColor(void);
 void saveArray(int saveMode, int arrayNum);
 void clearArray(void);
 void drawPixel(int xPos, int yPos);
-//void blink(int x, int y, int currentColor);
--
--/*void blink (int x, int y, int currentColor)
--{
--  int t = ; time corresonding to half a blinking period
--  
--    workInProgress [x] [y] [white];
--    updateArray();
--    delay t;
--    workInProgress [x] [y] [currentColor];
--    updateArray();
--    delay t;
-- 
--}
--
--*/
+void blink(int x, int y, int currentColor);
+
+void blink (int x, int y, int currentColor)
+{
+   int backupColorG;
+   int backupColorR;
+   int backupColorB;
+  
+   backupColorG = workInProgress [x] [y] [0];
+   backupColorR = workInProgress [x] [y] [1];
+   backupColorB = workInProgress [x] [y] [2];
+   workInProgress [x] [y] [0] = 15;
+   workInProgress [x] [y] [1] = 15;
+   workInProgress [x] [y] [2] = 15;
+
+    updateArray();
+    delayms();
+
+     workInProgress [xPos] [yPos] [0] = backupColorG;
+     workInProgress [xPos] [yPos] [1] = backupColorR;
+     workInProgress [xPos] [yPos] [2] = backupColorB;
+
+    updateArray();
+    delayms(); 
+}
+
   
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
