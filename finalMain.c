@@ -60,6 +60,22 @@ void saveArray(int saveMode, int arrayNum);
 void clearArray(void);
 void drawPixel(int xPos, int yPos);
 
+//void blink(int x, int y, int currentColor);
+
+/*void blink (int x, int y, int currentColor)
+{
+  int t = ; time corresonding to half a blinking period
+  
+    workInProgress [x] [y] [white];
+    updateArray();
+    delay t;
+    workInProgress [x] [y] [currentColor];
+    updateArray();
+    delay t;
+ 
+}
+
+*/
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
   
@@ -235,6 +251,7 @@ int main()
         if(cursorPosition [0] < 7) //if cursor not all the way to rigth
         {
             cursorPosition [0] = cursorPosition [0] + 1;
+            //blink(cursorPosition[0],cursorPosition[1],colorCount)
         }
         // else stay at current position
         rightFlag = 0;
@@ -246,6 +263,7 @@ int main()
         if(cursorPosition [0] > 0) //if cursor not all the way to left
         {
          cursorPosition [0] = cursorPosition [0] - 1;
+         //blink(cursorPosition[0],cursorPosition[1],colorCount)
         }
         // else stay at current position
         leftFlag = 0;
@@ -257,6 +275,7 @@ int main()
         if (cursorPosition [1] > 0)//if cursor not all the way to up
         {
          cursorPosition [1] = cursorPosition [1] - 1;
+         //blink(cursorPosition[0], cursorPosition[1], colorCount)
         }
         // else stay at current position
         upFlag = 0;
@@ -268,6 +287,7 @@ int main()
         if(cursorPosition [1] < 7)//if cursor not all the way to down
         {
          cursorPosition [1] = cursorPosition [1] + 1;
+         //blink(cursorPosition[0],cursorPosition[1],colorCount)
         }
         // else stay at current position
         downFlag = 0;
