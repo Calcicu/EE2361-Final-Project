@@ -29,6 +29,7 @@
 
 /*Global Flags*/
 int modeFlag = 0; // Mode starts in the drawing mode
+int modeChangeFlag = 1;
 int rightFlag = 0;
 int leftFlag = 0;
 int upFlag = 0;
@@ -38,6 +39,7 @@ int cursorRightFlag = 0;        //Tracks cursor position on LCD
 int saveFlag = 0; //save button was pressed
 int loadFlag = 0; //Load button pressed
 int LEDFlag = 0; //Turn LED on/off
+int colorFlag = 0;      //Shows when colors need to be cycled
 
 /*Array*/
 unsigned char cursorPosition [2];   //cursorPosition[0] = x, cursorPosition [1] = y
@@ -55,15 +57,14 @@ void lcdDisplayCursor(void);
 void updateArray(void);
 void fillPresetColor(void);
 void saveArray(int saveMode, int arrayNum);
+void clearArray(void);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
   
   if (modeFlag == 0)
   {
-    ++colorCount;
-    if (colorCount == 7)
-        colorCount = 0;
+      colorFlag = 1;
   }
   else
   {
@@ -75,7 +76,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 }
 void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
 {
-  
+    modeChangeFlag = 1;
   if (modeFlag == 0)
   {
     modeFlag = 1; // upload/save mode
@@ -157,27 +158,33 @@ void __attribute__((__interrupt__,__auto_psv__)) _T3Interrupt(void)
 
 int main()
 {
-  setup();
-  lcd_init();
-  fillPresetColor();
-  cursorPosition [0] = 0;
-  cursorPosition [1] = 1;
-  
-  
-  while(1)
-  {  
-   
+    setup();
+    lcd_init();
+    fillPresetColor();
+    cursorPosition [0] = 0;
+    cursorPosition [1] = 0;
+    clearArray();
+    
+    while(1)
+    {  
+    while(!_T3IF);  //Wait for 1/4 second
+    _T3IF = 0;
+    
     _AD1IE = 0;
     _IC1IE = 0;
     _IC2IE = 0;
     _IC3IE = 0;
       
-  //  updateArray();  //This function is timing sensitive, disable interrupts immediately before
+    updateArray();  //This function is timing sensitive, disable interrupts immediately before
     
     _AD1IE = 1;
     _IC1IE = 1;
     _IC2IE = 1;
     _IC3IE = 1;
+    
+    jat_wait_50us();
+    
+    //lcdDisplayCursor();
     
     // changes flags if a button was pressed during updateArray()
     if (_RB9 == 0){    //if save/cycle color was pressed during refresh
@@ -205,10 +212,21 @@ int main()
     
     //Process flags (update cursor position, update color values, etc.)
     
+    if (colorFlag){
+        colorCount++;
+        colorFlag = 0;
+        if (colorCount == 7)
+            colorCount = 0;
+    }
+    
     if (modeFlag == 1)  //draw mode
     {
-      setCursor(0,1);   //set the cd display so that is shows when the game is in drawing mode
-      lcdPrintStr("Drawing");
+      if (modeChangeFlag){  
+        setCursor(0,1);   //set the cd display so that is shows when the game is in drawing mode
+        lcdPrintStr("Drawing");
+        modeChangeFlag = 0;
+      }
+    
       lcdDisplayCursor();
       
       if (rightFlag)
@@ -270,12 +288,16 @@ int main()
     }
     
     else{  //upload mode
-        setCursor(1,0);
-        lcdPrintStr(" 1 2 3 ");
-        setCursor(0,1);
-        lcdPrintStr("Upload");
+        if (modeChangeFlag){    //The display only refreshes on mode changes, not every loop
+            setCursor(1,0);
+            lcdPrintStr(" 1 2 3 ");
+            setCursor(0,1);
+            lcdPrintStr("Upload ");
+            modeChangeFlag = 0;
+        }
+        
         lcdDisplayCursor();
-
+        
         if (saveFlag) // saving c=work into an array
         {
             saveFlag = 0;
@@ -307,6 +329,7 @@ int main()
             if(cursorRightFlag > 2)
                 cursorRightFlag = 0;
             
+            lcdDisplayCursor();
             rightFlag = 0;
             changeFlag = 0;
         }
@@ -316,6 +339,7 @@ int main()
             if(cursorRightFlag < 0)
                 cursorRightFlag = 2;
             
+            lcdDisplayCursor();
             leftFlag = 0;
             changeFlag = 0;
         }
@@ -338,7 +362,7 @@ int main()
     // 2. refresh LED  
     // 3. put the conditions that set the flags and the interrupts
               //jat_wait_1ms(); 
-              //jat_wait_1ms();*/
+              //jat_wait_1ms();
   }
   return 0;
 }
@@ -348,7 +372,7 @@ void setup(void)
     CLKDIVbits.RCDIV = 0; //set Fcy to 16MHz
     AD1PCFG = 0xfffc;   //AN0 and AN1 are analog
     TRISA = 0b1111111111111011; //TRISA still needs to be set
-    TRISB = 0b0000001110000011; // TRISA still needs to be set
+    TRISB = 0b0000001110000011; // TRISB still needs to be set
   
     // pullup resistors
     _CN21PUE = 1; //enable pullup resostor for RB9
@@ -391,15 +415,14 @@ void setup(void)
     _MI2C2IF = 0;
     I2C2CONbits.I2CEN = 1; //enable I2C
   
-    /*initialize timer 3
- 
+    //initialize timer 3
     TMR3 = 0;
     T3CON = 0;
-    PR3 = 15999; //show values every 100ms
-    T3CONbits.TCKPS = 0; // prescaer set 1:1
+    PR3 = 25999; //update values every ~1/4 second
+    T3CONbits.TCKPS = 0b11; // prescaer set 1:256
     
     //_T3IE = 1;
-    //_T3IP = 3; // set to low priority , we can change that if we need to*/
+    //_T3IP = 3; // set to low priority , we can change that if we need to
     
     AD1CON1 = 0x0000;
     AD1CON2 = 0x0000;
@@ -421,7 +444,7 @@ void setup(void)
     _AD1IE = 1; //enable interrupt
     
     AD1CON1bits.ADON = 1; 
-    // T3CONbits.TON = 1;
+     T3CONbits.TON = 1;
     
     //initialize input capture for the joystick
   
@@ -577,4 +600,18 @@ void saveArray(int saveMode, int arrayNum){
             }//end for y
         }//end arrayNum = 3
     }//end if saveMode == 1 (saving)
+}
+
+void clearArray(void){
+    int x;
+    int y;
+    int color;
+    
+    for(y = 0; y < 8; y++){
+        for(x = 0; x < 8; x++){
+            for(color = 0; color < 3; color++){
+                workInProgress [x] [y] [color] = 0;
+            }//end for color
+        }//end for x
+    }//end for y
 }
