@@ -6,7 +6,7 @@
 .global _write_0, _write_1, _jat_wait_50us, _jat_wait_1ms
     
 _write_0:		;20 cycle period
-    bset LATA, #0		; Set LATA high
+    bset LATA, #0x2		; Set LATA high
     repeat #3		
     nop
     clr LATA		; Set LATA low
@@ -15,7 +15,7 @@ _write_0:		;20 cycle period
     return
     
 _write_1:		; 20 cycle period
-    bset LATA, #0	; Set LATA high
+    bset LATA, #0x2	; Set LATA high
     repeat #8
     nop
     clr LATA		; Set LATA low
