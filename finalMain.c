@@ -316,13 +316,12 @@ int main()
     }//end upload mode
    
       
-      _AD1IE = 0;
+    _AD1IE = 0;
     _IC1IE = 0;
     _IC2IE = 0;
     _IC3IE = 0;
-      
-    updateArray();  //This function is timing sensitive, disable interrupts immediately before
     blink(cursorPosition[0], cursorPosition[1]);
+    updateArray();  //This function is timing sensitive, disable interrupts immediately before
       
     _AD1IE = 1;
     _IC1IE = 1;
@@ -640,16 +639,14 @@ void blink (int x, int y)
    backupColorG = workInProgress [x] [y] [0];
    backupColorR = workInProgress [x] [y] [1];
    backupColorB = workInProgress [x] [y] [2];
-   workInProgress [x] [y] [0] = 15;
-   workInProgress [x] [y] [1] = 15;
-   workInProgress [x] [y] [2] = 15;
+   workInProgress [x] [y] [0] = 30;
+   workInProgress [x] [y] [1] = 30;
+   workInProgress [x] [y] [2] = 30;
 
     updateArray();
-    delayms(5);
+    waitms(125);
 
-     workInProgress [xPos] [yPos] [0] = backupColorG;
-     workInProgress [xPos] [yPos] [1] = backupColorR;
-     workInProgress [xPos] [yPos] [2] = backupColorB;
-
-    updateArray();
+     workInProgress [x] [y] [0] = backupColorG;
+     workInProgress [x] [y] [1] = backupColorR;
+     workInProgress [x] [y] [2] = backupColorB;
 }
