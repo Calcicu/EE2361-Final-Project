@@ -58,6 +58,7 @@ void updateArray(void);
 void fillPresetColor(void);
 void saveArray(int saveMode, int arrayNum);
 void clearArray(void);
+void drawPixel(int xPos, int yPos);
 
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
@@ -276,11 +277,7 @@ int main()
       if (LEDFlag)
       {
         LEDFlag = 0;
-        //turn on led
-      }
-      else if (!LEDFlag)
-      {
-        //turn off LED)
+        drawPixel(cursorPosition[0], cursorPosition[1]);
       }
         
       
@@ -614,4 +611,19 @@ void clearArray(void){
             }//end for color
         }//end for x
     }//end for y
+}
+
+void drawPixel(int xPos, int yPos){
+    if ((workInProgress [xPos] [yPos] [0] == presetColor[colorCount] [0]) &&
+            (workInProgress [xPos] [yPos] [1] == presetColor[colorCount] [1]) &&
+            (workInProgress [xPos] [yPos] [2]) == presetColor[colorCount] [2]){
+        workInProgress [xPos] [yPos] [0] = 0;
+        workInProgress [xPos] [yPos] [1] = 0;
+        workInProgress [xPos] [yPos] [2] = 0;
+    }
+    else{
+        workInProgress [xPos] [yPos] [0] = presetColor [colorCount] [0];
+        workInProgress [xPos] [yPos] [1] = presetColor [colorCount] [1];
+        workInProgress [xPos] [yPos] [2] = presetColor [colorCount] [2];
+    }
 }
