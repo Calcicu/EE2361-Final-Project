@@ -28,7 +28,7 @@
 #pragma config FNOSC = FRCPLL       // Oscillator Select (Fast RC Oscillator with PLL module (FRCPLL))
 
 /*Global Flags*/
-int modeFlag = 0; // Mode starts in the drawing mode
+int modeFlag = 0; // Mode starts in the upload mode
 int modeChangeFlag = 1;
 int rightFlag = 0;
 int leftFlag = 0;
@@ -60,26 +60,10 @@ void saveArray(int saveMode, int arrayNum);
 void clearArray(void);
 void drawPixel(int xPos, int yPos);
 
-//void blink(int x, int y, int currentColor);
-
-/*void blink (int x, int y, int currentColor)
-{
-  int t = ; time corresonding to half a blinking period
-  
-    workInProgress [x] [y] [white];
-    updateArray();
-    delay t;
-    workInProgress [x] [y] [currentColor];
-    updateArray();
-    delay t;
- 
-}
-
-*/
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
   
-  if (modeFlag == 0)
+  if (modeFlag == 1)
   {
       colorFlag = 1;
   }
@@ -96,11 +80,11 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC2Interrupt(void)
     modeChangeFlag = 1;
   if (modeFlag == 0)
   {
-    modeFlag = 1; // upload/save mode
+    modeFlag = 1; // draw mode
   }
   else 
   {
-    modeFlag = 0; //draw mode
+    modeFlag = 0; //upload/save
   }
   
   _IC2IF = 0;
@@ -113,7 +97,7 @@ void __attribute__((__interrupt__,__auto_psv__)) _IC3Interrupt(void)
   // in upload mode save button to certain array
  
   
-   if (modeFlag == 0)
+   if (modeFlag == 1)
   {
     LEDFlag = 1;
   }
@@ -232,7 +216,7 @@ int main()
     if (colorFlag){
         colorCount++;
         colorFlag = 0;
-        if (colorCount == 7)
+        if (colorCount >= 7)
             colorCount = 0;
     }
     
@@ -251,7 +235,6 @@ int main()
         if(cursorPosition [0] < 7) //if cursor not all the way to rigth
         {
             cursorPosition [0] = cursorPosition [0] + 1;
-            //blink(cursorPosition[0],cursorPosition[1],colorCount)
         }
         // else stay at current position
         rightFlag = 0;
@@ -263,7 +246,6 @@ int main()
         if(cursorPosition [0] > 0) //if cursor not all the way to left
         {
          cursorPosition [0] = cursorPosition [0] - 1;
-         //blink(cursorPosition[0],cursorPosition[1],colorCount)
         }
         // else stay at current position
         leftFlag = 0;
@@ -275,7 +257,6 @@ int main()
         if (cursorPosition [1] > 0)//if cursor not all the way to up
         {
          cursorPosition [1] = cursorPosition [1] - 1;
-         //blink(cursorPosition[0], cursorPosition[1], colorCount)
         }
         // else stay at current position
         upFlag = 0;
@@ -287,7 +268,6 @@ int main()
         if(cursorPosition [1] < 7)//if cursor not all the way to down
         {
          cursorPosition [1] = cursorPosition [1] + 1;
-         //blink(cursorPosition[0],cursorPosition[1],colorCount)
         }
         // else stay at current position
         downFlag = 0;
