@@ -59,31 +59,7 @@ void fillPresetColor(void);
 void saveArray(int saveMode, int arrayNum);
 void clearArray(void);
 void drawPixel(int xPos, int yPos);
-void blink(int x, int y, int currentColor);
-
-void blink (int x, int y, int currentColor)
-{
-   int backupColorG;
-   int backupColorR;
-   int backupColorB;
-  
-   backupColorG = workInProgress [x] [y] [0];
-   backupColorR = workInProgress [x] [y] [1];
-   backupColorB = workInProgress [x] [y] [2];
-   workInProgress [x] [y] [0] = 15;
-   workInProgress [x] [y] [1] = 15;
-   workInProgress [x] [y] [2] = 15;
-
-    updateArray();
-    delayms();
-
-     workInProgress [xPos] [yPos] [0] = backupColorG;
-     workInProgress [xPos] [yPos] [1] = backupColorR;
-     workInProgress [xPos] [yPos] [2] = backupColorB;
-
-    updateArray();
-    delayms(); 
-}
+void blink(int x, int y);
 
   
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
@@ -196,46 +172,6 @@ int main()
     {  
     while(!_T3IF);  //Wait for 1/4 second
     _T3IF = 0;
-    
-    _AD1IE = 0;
-    _IC1IE = 0;
-    _IC2IE = 0;
-    _IC3IE = 0;
-      
-    updateArray();  //This function is timing sensitive, disable interrupts immediately before
-    
-    _AD1IE = 1;
-    _IC1IE = 1;
-    _IC2IE = 1;
-    _IC3IE = 1;
-    
-    jat_wait_50us();
-    
-    //lcdDisplayCursor();
-    
-    // changes flags if a button was pressed during updateArray()
-    if (_RB9 == 0){    //if save/cycle color was pressed during refresh
-      if (!modeFlag)
-        //set save flag
-        saveFlag = 1;
-      else
-        colorCount++;
-        
-    }//end if _RB9 = 1
-    
-    if (_RB7 == 0){    //if load/draw was pressed during refresh
-      if (!modeFlag)
-      {
-        loadFlag = 1;
-      }
-      else
-        LEDFlag = 1;
-    }//end if _RB7 = 1
-    
-    if (_RB8 == 0){    //if toggle mode was pressed during refresh
-     // modeFlag = !modeFlag;
-    }
-    
     
     //Process flags (update cursor position, update color values, etc.)
     
@@ -380,6 +316,47 @@ int main()
     }//end upload mode
    
       
+      _AD1IE = 0;
+    _IC1IE = 0;
+    _IC2IE = 0;
+    _IC3IE = 0;
+      
+    updateArray();  //This function is timing sensitive, disable interrupts immediately before
+    blink(cursorPosition[0], cursorPosition[1]);
+      
+    _AD1IE = 1;
+    _IC1IE = 1;
+    _IC2IE = 1;
+    _IC3IE = 1;
+    
+    jat_wait_50us();
+    
+    //lcdDisplayCursor();
+    
+    // changes flags if a button was pressed during updateArray()
+    if (_RB9 == 0){    //if save/cycle color was pressed during refresh
+      if (!modeFlag)
+        //set save flag
+        saveFlag = 1;
+      else
+        colorCount++;
+        
+    }//end if _RB9 = 1
+    
+    if (_RB7 == 0){    //if load/draw was pressed during refresh
+      if (!modeFlag)
+      {
+        loadFlag = 1;
+      }
+      else
+        LEDFlag = 1;
+    }//end if _RB7 = 1
+    
+    if (_RB8 == 0){    //if toggle mode was pressed during refresh
+     // modeFlag = !modeFlag;
+    }
+    
+    
     //every 2ms:
     // 1. disable interrupts 
     // 2. refresh LED  
@@ -652,4 +629,27 @@ void drawPixel(int xPos, int yPos){
         workInProgress [xPos] [yPos] [1] = presetColor [colorCount] [1];
         workInProgress [xPos] [yPos] [2] = presetColor [colorCount] [2];
     }
+}
+
+void blink (int x, int y)
+{
+   int backupColorG;
+   int backupColorR;
+   int backupColorB;
+  
+   backupColorG = workInProgress [x] [y] [0];
+   backupColorR = workInProgress [x] [y] [1];
+   backupColorB = workInProgress [x] [y] [2];
+   workInProgress [x] [y] [0] = 15;
+   workInProgress [x] [y] [1] = 15;
+   workInProgress [x] [y] [2] = 15;
+
+    updateArray();
+    delayms(5);
+
+     workInProgress [xPos] [yPos] [0] = backupColorG;
+     workInProgress [xPos] [yPos] [1] = backupColorR;
+     workInProgress [xPos] [yPos] [2] = backupColorB;
+
+    updateArray();
 }
