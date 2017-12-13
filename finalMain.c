@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include "thom6223_lab4b_asmLib.h"
 
-// CW1: FLASH CONFIGURATION WORD 1 (see PI24 Family Reference Manual 24.1)
+// CW1: FLASH CONFIGURATION WORD 1  (see PI24 Family Reference Manual 24.1)
 #pragma config ICS = PGx1           // Comm Channel Select (Emulator EMUC1/EMUD1 pins areshared with PGC1/PGD1)
 #pragma config FWDTEN = OFF         // Watchdog Timer Enable (Watchdog Timer is disabled)
 #pragma config GWRP = OFF           // General Code Segment Write Protect (Writes to program memory are allowed)
@@ -59,20 +59,18 @@ void fillPresetColor(void);
 void saveArray(int saveMode, int arrayNum);
 void clearArray(void);
 void drawPixel(int xPos, int yPos);
-void blink(int x, int y);
-
+void blink(int x, int y);       //To be called with (cursorPos[0], cursorPos[1])
+void stripeDemo(void);
   
 void __attribute__((__interrupt__,__auto_psv__)) _IC1Interrupt(void)
 {
   
-  if (modeFlag == 1)
-  {
-      colorFlag = 1;
-  }
-  else
-  {
-    saveFlag = 1;
-  }
+    if (modeFlag == 1){
+        colorFlag = 1;
+    }
+    else{
+        saveFlag = 1;
+    }
   
   _IC1IF = 0;
   
@@ -167,6 +165,7 @@ int main()
     cursorPosition [0] = 0;
     cursorPosition [1] = 0;
     clearArray();
+    stripeDemo();           //Loads rainbow stripes into array3
     
     while(1)
     {  
@@ -523,11 +522,11 @@ void fillPresetColor(void){
     presetColor[4] [1] = 0;
     presetColor[4] [2] = 15;
     
-    presetColor[5] [0] = 0;     //Pink
+    presetColor[5] [0] = 0;     //Purple
     presetColor[5] [1] = 12;
     presetColor[5] [2] = 24;
     
-    presetColor[6] [0] = 0;     //Purple
+    presetColor[6] [0] = 0;     //Pink
     presetColor[6] [1] = 31;
     presetColor[6] [2] = 15;
 }
@@ -639,14 +638,58 @@ void blink (int x, int y)
    backupColorG = workInProgress [x] [y] [0];
    backupColorR = workInProgress [x] [y] [1];
    backupColorB = workInProgress [x] [y] [2];
-   workInProgress [x] [y] [0] = 30;
-   workInProgress [x] [y] [1] = 30;
-   workInProgress [x] [y] [2] = 30;
+   workInProgress [x] [y] [0] = 15;
+   workInProgress [x] [y] [1] = 15;
+   workInProgress [x] [y] [2] = 15;
 
     updateArray();
-    waitms(125);
+    waitms(250);
 
      workInProgress [x] [y] [0] = backupColorG;
      workInProgress [x] [y] [1] = backupColorR;
      workInProgress [x] [y] [2] = backupColorB;
+}
+
+void stripeDemo(void){
+    int x;
+    int y;
+    
+    for(y = 0, x = 4; y < 5; y++){      //Red stripe
+        array3 [x] [y] [1] = 15;
+        x--;
+    }//end for y
+    
+    for(y = 0, x = 5; y < 6; y++){      //Orange stripe
+        array3 [x] [y] [0] = 7;
+        array3 [x] [y] [1] = 24;
+        x--;
+    }//end for y
+    
+    for(y = 0, x = 6; y < 7; y++){      //Yellow stripe
+        array3 [x] [y] [0] = 15;
+        array3 [x] [y] [1] = 15;
+        x--;
+    }//end for y
+    
+    for(y = 0, x = 7; y < 8; y++){      //Green stripe
+        array3 [x] [y] [0] = 15;
+        x--;
+    }//end for y
+    
+    for(y = 1, x = 7; y < 8; y++){      //Blue stripe
+        array3 [x] [y] [2] = 15;
+        x--;
+    }//end for y
+    
+    for(y = 2, x = 7; y < 8; y++){      //Purple stripe
+        array3 [x] [y] [1] = 12;
+        array3 [x] [y] [2] = 24;
+        x--;
+    }//end for y
+    
+    for(y = 3, x = 7; y < 8; y++){      //Pink stripe
+        array3 [x] [y] [1] = 31;
+        array3 [x] [y] [2] = 15;
+        x--;
+    }//end for y
 }
